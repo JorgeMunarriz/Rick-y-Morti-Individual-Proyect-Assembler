@@ -11,7 +11,7 @@ import { urlEpisodes } from "../utils/urlApi.js";
 import { seasons } from "../interfaces.js";
 const listSeasons = [];
 const ulListSeasons = document.getElementById("ulListSeason");
-export const populateSeasons = () => __awaiter(void 0, void 0, void 0, function* () {
+export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const episodes = yield fetchEpisodes();
         let episodeCounter = 0;
@@ -36,13 +36,14 @@ export const populateSeasons = () => __awaiter(void 0, void 0, void 0, function*
                 episodeRange = episodes.slice(episodeCounter, episodeCounter + 10);
                 episodeCounter += 10;
             }
+            const homeSeasons = document.getElementById("homeSeasons");
             const seasonLi = document.createElement("li");
             seasonLi.setAttribute("class", "nav-item pe-auto");
             ulListSeasons === null || ulListSeasons === void 0 ? void 0 : ulListSeasons.appendChild(seasonLi);
             const divDropdown = document.createElement("div");
             divDropdown.setAttribute("class", "dropdown");
             seasonLi.appendChild(divDropdown);
-            const linkSeason = document.createElement("a");
+            const linkSeason = document.createElement("button");
             linkSeason.setAttribute("class", "nav-link pe-auto d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2");
             linkSeason.setAttribute("data-bs-toggle", "dropdown");
             linkSeason.setAttribute("aria-expanded", "false");
@@ -54,6 +55,13 @@ export const populateSeasons = () => __awaiter(void 0, void 0, void 0, function*
             ulListofEpisodes.setAttribute("class", "dropdown-menu dropdown-menu-dark text-small shadow");
             ulListofEpisodes.setAttribute("id", `episodesList-${season.id}`);
             divDropdown.appendChild(ulListofEpisodes);
+            linkSeason.onclick = function () {
+                homeSeasons === null || homeSeasons === void 0 ? void 0 : homeSeasons.classList.remove("active");
+                linkSeason.classList.toggle("active");
+                ulListofEpisodes.onclick = function () {
+                    linkSeason.classList.remove("active");
+                };
+            };
             episodeRange.forEach((episode) => {
                 const episodeLi = document.createElement("li");
                 episodeLi.setAttribute("class", "dropdown-item");
@@ -108,6 +116,12 @@ export const populateSeasons = () => __awaiter(void 0, void 0, void 0, function*
                             const pSpecies = document.createElement("p");
                             pSpecies.textContent = `Species: ${characterData.species}`;
                             characterDiv.appendChild(pSpecies);
+                            const pGender = document.createElement("p");
+                            pGender.textContent = `Gender: ${characterData.gender}`;
+                            characterDiv.appendChild(pGender);
+                            const pOrigin = document.createElement("p");
+                            pOrigin.textContent = `Origin: ${characterData.origin.name}`;
+                            characterDiv.appendChild(pOrigin);
                             divContainerCharacters.appendChild(characterDiv);
                             characterDiv.addEventListener("click", () => showCharacter(characterData.id));
                             console.log(characterData.id);
@@ -145,41 +159,71 @@ const fetchEpisodes = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     return allEpisodes;
 });
-function showCharacter(characterData) {
+function showCharacter(characterId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const characterDetailsContainer = document.createElement("div");
-        characterDetailsContainer.setAttribute("class", "character-details");
-        const characterImage = document.createElement("img");
-        characterImage.setAttribute("src", characterData.image);
-        characterDetailsContainer.appendChild(characterImage);
-        const pName = document.createElement("p");
-        pName.textContent = `Name: ${characterData.name}`;
-        characterDetailsContainer.appendChild(pName);
-        const pStatus = document.createElement("p");
-        pStatus.textContent = `Status: ${characterData.status}`;
-        characterDetailsContainer.appendChild(pStatus);
-        const pSpecies = document.createElement("p");
-        pSpecies.textContent = `Species: ${characterData.species}`;
-        characterDetailsContainer.appendChild(pSpecies);
         try {
-            const episodePromises = characterData.episode.map((urlEpisodes) => fetch(urlEpisodes).then((response) => {
-                if (!response.ok) {
-                    throw new Error("Failed to fetch episode data");
-                }
-                return response.json();
-            }));
-            const episodes = yield Promise.all(episodePromises);
-            const episodeList = document.createElement("ul");
-            episodes.forEach((episode) => {
-                const episodeItem = document.createElement("li");
-                episodeItem.textContent = episode.name;
-                episodeList.appendChild(episodeItem);
-            });
-            characterDetailsContainer.appendChild(episodeList);
+            const containerMain = document.getElementById("containerMain");
+            containerMain === null || containerMain === void 0 ? void 0 : containerMain.replaceChildren();
+            const characterResponse = yield fetchCharacter(characterId);
+            const characterData = characterResponse;
+            const characterDetailsContainer = document.createElement("div");
+            characterDetailsContainer.setAttribute("class", "character-details");
+            containerMain === null || containerMain === void 0 ? void 0 : containerMain.appendChild(characterDetailsContainer);
+            const characterImage = document.createElement("img");
+            characterImage.setAttribute("src", characterData.image);
+            characterDetailsContainer.appendChild(characterImage);
+            const pName = document.createElement("p");
+            pName.textContent = `Name: ${characterData.name}`;
+            characterDetailsContainer.appendChild(pName);
+            const pStatus = document.createElement("p");
+            pStatus.textContent = `Status: ${characterData.status}`;
+            characterDetailsContainer.appendChild(pStatus);
+            const pSpecies = document.createElement("p");
+            pSpecies.textContent = `Species: ${characterData.species}`;
+            characterDetailsContainer.appendChild(pSpecies);
+            const pGender = document.createElement("p");
+            pGender.textContent = `Gender: ${characterData.gender}`;
+            characterDetailsContainer.appendChild(pGender);
+            const pOrigin = document.createElement("p");
+            pOrigin.textContent = `Origin: ${characterData.origin.name}`;
+            characterDetailsContainer.appendChild(pOrigin);
+            try {
+                const episodePromises = characterData.episode.map((urlEpisode) => fetch(urlEpisode).then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch episode data");
+                    }
+                    return response.json();
+                }));
+                const episodes = yield Promise.all(episodePromises);
+                const episodeList = document.createElement("ul");
+                episodes.forEach((episode) => {
+                    const episodeItem = document.createElement("li");
+                    episodeItem.textContent = `Episode${episode.name} | ${episode.episode}`;
+                    episodeList.appendChild(episodeItem);
+                });
+                characterDetailsContainer.appendChild(episodeList);
+                const characterContainer = document.getElementById("character-container");
+                characterContainer === null || characterContainer === void 0 ? void 0 : characterContainer.appendChild(characterDetailsContainer);
+            }
+            catch (error) {
+                console.error("Error fetching episode data:", error);
+            }
         }
         catch (error) {
-            console.error("Error fetching episode data:", error);
+            console.error("Error fetching character data:", error);
         }
+    });
+}
+function fetchCharacter(characterId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const urlCharacter = `https://rickandmortyapi.com/api/character/${characterId}`;
+        const response = yield fetch(urlCharacter);
+        const data = yield response.json();
+        return data;
+    });
+}
+function createEpisodesNavBarList() {
+    return __awaiter(this, void 0, void 0, function* () {
     });
 }
 //# sourceMappingURL=index.js.map

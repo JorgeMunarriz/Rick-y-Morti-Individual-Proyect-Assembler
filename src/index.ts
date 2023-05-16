@@ -1,41 +1,26 @@
-// import {getLocations} from '../dist/Locations/';
-import { Season, seasons, Episode, Location, LocationResponse, Info, RootObject, Result, Gender, Species, Status, ResultCharacter} from "./interfaces.js";
-import { urlApi, urlEpisodes, urlCharacters, urlLocations} from "./utils/urlApi.js"
-import { populateSeasons } from "./episodes/index.js";
+import { logIn } from "./utils/signIn.js";
+import {searchElements} from "./utils/urlApi.js"
+import { createSeasonsList } from "./episodes/index.js";
 import { changeThemesAdd  } from "./changeThemes/index.js";
+import { showLocations } from "./Locations/index.js";
+import { getCharacters } from "./characters/characters.js";
 
-// const urlApi = "https://rickandmortyapi.com/api";
-// const urlCharacters = `${urlApi}/character`;
-//  const urlLocations = `${urlApi}/location`;
-// const urlEpisodes = `${urlApi}/episode`;
 
-// interface Season {
-//   id: number;
-//   name: string;
-//   episodes: Episode[];
-// }
-
-// const seasons: Season[] = [
-//   { id: 1, name: "Season 1", episodes: [] },
-//   { id: 2, name: "Season 2", episodes: [] },
-//   { id: 3, name: "Season 3", episodes: [] },
-//   { id: 4, name: "Season 4", episodes: [] },
-//   { id: 5, name: "Season 5", episodes: [] },
-//   { id: 6, name: "Season 6", episodes: [] },
-// ];
-
-// interface Episode {
-//   id: number;
-//   name: string;
-//   air_date: string;
-//   episode: string;
-//   characters: string[];
-// }
 window.onload= function() {
-  populateSeasons();
-  changeThemesAdd();
+  changeThemesAdd(); 
+  createSeasonsList();  
+  getCharacters();
   
+  const buttonShowLocations = document.getElementById("locationsBtn");
+  buttonShowLocations?.addEventListener("click", showLocations);
+  const buttonSearchNames = document.getElementById("searchBtn");
+buttonSearchNames?.addEventListener("click", () => {
+  const searchTerm = (document.getElementById("inputSearch") as HTMLInputElement).value;
+  searchElements(searchTerm);
+});
 }
+
+
 
 
 
@@ -222,124 +207,124 @@ window.onload= function() {
 
 
 
-let allLocations: Location[] = [];
+// let allLocations: Location[] = [];
 
-const locationBtn = document.getElementById("locationsBtn");
-locationBtn?.addEventListener("click", showLocations);
+// const locationBtn = document.getElementById("locationsBtn");
+// locationBtn?.addEventListener("click", showLocations);
 
-const fetchAllLocations = async (): Promise<Location[]> => {
-  let nextPageUrl: string | null = urlLocations;
-  let allLocations: Location[] = [];
+// const fetchAllLocations = async (): Promise<Location[]> => {
+//   let nextPageUrl: string | null = urlLocations;
+//   let allLocations: Location[] = [];
 
-  while (nextPageUrl) {
-    const res = await fetch(nextPageUrl);
-    const data: LocationResponse = await res.json();
-    const locations: Location[] = data.results;
-    allLocations = allLocations.concat(locations);
-    nextPageUrl = data.info.next;
-  }
+//   while (nextPageUrl) {
+//     const res = await fetch(nextPageUrl);
+//     const data: LocationResponse = await res.json();
+//     const locations: Location[] = data.results;
+//     allLocations = allLocations.concat(locations);
+//     nextPageUrl = data.info.next;
+//   }
 
-  return allLocations;
-};
+//   return allLocations;
+// };
 
-// Mostrar los locations
-async function showLocations() {
-  const locations = await fetchAllLocations();
+// // Mostrar los locations
+// async function showLocations() {
+//   const locations = await fetchAllLocations();
 
-  const container = document.getElementById("containerMain");
-  container?.replaceChildren();
+//   const container = document.getElementById("containerMain");
+//   container?.replaceChildren();
 
-  const divContainer = document.createElement("div");
-  divContainer.setAttribute("class", "container");
-  container?.appendChild(divContainer);
+//   const divContainer = document.createElement("div");
+//   divContainer.setAttribute("class", "container");
+//   container?.appendChild(divContainer);
 
-  const titleLocation = document.createElement("h2");
-  titleLocation.setAttribute("class", "text-align-left");
-  divContainer.appendChild(titleLocation);
-  titleLocation.textContent = "Locations";
-  const divUlLocations = document.createElement("div");
-  divUlLocations.setAttribute("class", "overflow-auto");
-  divUlLocations.style.maxHeight = "600px";
-  divUlLocations.setAttribute("tabindex", "0");
+//   const titleLocation = document.createElement("h2");
+//   titleLocation.setAttribute("class", "text-align-left");
+//   divContainer.appendChild(titleLocation);
+//   titleLocation.textContent = "Locations";
+//   const divUlLocations = document.createElement("div");
+//   divUlLocations.setAttribute("class", "overflow-auto");
+//   divUlLocations.style.maxHeight = "600px";
+//   divUlLocations.setAttribute("tabindex", "0");
 
-  divContainer.appendChild(divUlLocations);
+//   divContainer.appendChild(divUlLocations);
 
-  const ulListOfLocations = document.createElement("ul");
-  ulListOfLocations.setAttribute("class", "list-group");
-  divUlLocations.appendChild(ulListOfLocations);
+//   const ulListOfLocations = document.createElement("ul");
+//   ulListOfLocations.setAttribute("class", "list-group");
+//   divUlLocations.appendChild(ulListOfLocations);
 
-  locations.forEach((location) => {
-    const listLocation = document.createElement("li");
-    listLocation.setAttribute("class", "list-group-item");
-    const linkLocation = document.createElement("a");
-    linkLocation.setAttribute("class", "link-item");
-    linkLocation.textContent = location.name;
-    // linkLocation.addEventListener("click", () => showLocation(location));
-    listLocation.appendChild(linkLocation);
-    ulListOfLocations.appendChild(listLocation);
-  });
-}
-// Mostrar los detalles de un location específico
-function showLocation(location: Location) {
-  const container = document.getElementById("containerMain");
-  container?.replaceChildren();
+//   locations.forEach((location) => {
+//     const listLocation = document.createElement("li");
+//     listLocation.setAttribute("class", "list-group-item");
+//     const linkLocation = document.createElement("a");
+//     linkLocation.setAttribute("class", "link-item");
+//     linkLocation.textContent = location.name;
+//     // linkLocation.addEventListener("click", () => showLocation(location));
+//     listLocation.appendChild(linkLocation);
+//     ulListOfLocations.appendChild(listLocation);
+//   });
+// }
+// // Mostrar los detalles de un location específico
+// function showLocation(location: Location) {
+//   const container = document.getElementById("containerMain");
+//   container?.replaceChildren();
 
-  const locationDiv = document.createElement("div");
-  locationDiv.setAttribute("class", "location-details");
-  container?.appendChild(locationDiv);
+//   const locationDiv = document.createElement("div");
+//   locationDiv.setAttribute("class", "location-details");
+//   container?.appendChild(locationDiv);
 
-  const titleLocation = document.createElement("h2");
-  titleLocation.textContent = location.name;
-  locationDiv.appendChild(titleLocation);
+//   const titleLocation = document.createElement("h2");
+//   titleLocation.textContent = location.name;
+//   locationDiv.appendChild(titleLocation);
 
-  const locationInfo = document.createElement("p");
-  locationInfo.textContent = `Location: ${location.type} | ${location.dimension}`;
-  locationDiv.appendChild(locationInfo);
+//   const locationInfo = document.createElement("p");
+//   locationInfo.textContent = `Location: ${location.type} | ${location.dimension}`;
+//   locationDiv.appendChild(locationInfo);
 
-  const residentsContainer = document.createElement("div");
-  residentsContainer.setAttribute(
-    "class",
-    "row row-cols-1 row-cols-sm-2 row-cols-md-3 g-5"
-  );
-  locationDiv.appendChild(residentsContainer);
+//   const residentsContainer = document.createElement("div");
+//   residentsContainer.setAttribute(
+//     "class",
+//     "row row-cols-1 row-cols-sm-2 row-cols-md-3 g-5"
+//   );
+//   locationDiv.appendChild(residentsContainer);
 
-  const characterPromises = location.residents.map((characterURL) => {
-    return fetch(characterURL)
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error("Error fetching character data:", error);
-      });
-  });
+//   const characterPromises = location.residents.map((characterURL) => {
+//     return fetch(characterURL)
+//       .then((response) => response.json())
+//       .catch((error) => {
+//         console.error("Error fetching character data:", error);
+//       });
+//   });
 
-  Promise.all(characterPromises)
-    .then((characterDataArray) => {
-      characterDataArray.forEach((characterData) => {
-        const residentDiv = document.createElement("div");
-        residentDiv.setAttribute("class", "col");
+//   Promise.all(characterPromises)
+//     .then((characterDataArray) => {
+//       characterDataArray.forEach((characterData) => {
+//         const residentDiv = document.createElement("div");
+//         residentDiv.setAttribute("class", "col");
 
-        const characterImage = document.createElement("img");
-        characterImage.setAttribute("src", characterData.image);
-        residentDiv.appendChild(characterImage);
+//         const characterImage = document.createElement("img");
+//         characterImage.setAttribute("src", characterData.image);
+//         residentDiv.appendChild(characterImage);
 
-        const pName = document.createElement("p");
-        pName.textContent = `Name: ${characterData.name}`;
-        residentDiv.appendChild(pName);
+//         const pName = document.createElement("p");
+//         pName.textContent = `Name: ${characterData.name}`;
+//         residentDiv.appendChild(pName);
 
-        const pStatus = document.createElement("p");
-        pStatus.textContent = `Status: ${characterData.status}`;
-        residentDiv.appendChild(pStatus);
+//         const pStatus = document.createElement("p");
+//         pStatus.textContent = `Status: ${characterData.status}`;
+//         residentDiv.appendChild(pStatus);
 
-        const pSpecies = document.createElement("p");
-        pSpecies.textContent = `Species: ${characterData.species}`;
-        residentDiv.appendChild(pSpecies);
+//         const pSpecies = document.createElement("p");
+//         pSpecies.textContent = `Species: ${characterData.species}`;
+//         residentDiv.appendChild(pSpecies);
 
-        residentsContainer.appendChild(residentDiv);
-      });
-    })
-    .catch((error) => {
-      console.error("Error fetching character data:", error);
-    });
-}
+//         residentsContainer.appendChild(residentDiv);
+//       });
+//     })
+//     .catch((error) => {
+//       console.error("Error fetching character data:", error);
+//     });
+// }
 
 
 

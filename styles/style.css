@@ -6,3 +6,37 @@
 .header-bg-green{
     background: rgb(151,206,76);
 }
+
+
+.side-bar-small{
+    display: block;
+    position: absolute;
+    visibility: visible;
+    width: 4.5rem
+
+}
+.no-show{
+    display: none;
+}
+
+.form-div{
+    display: none;
+    width: 60%;
+    
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    
+
+}
+
+
+.form-center{
+    display: none;
+    flex-direction: column;
+
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}
+
