@@ -23,4 +23,5 @@ export var Status;
     Status["Dead"] = "Dead";
     Status["Unknown"] = "unknown";
 })(Status || (Status = {}));
+console.log("hola");
 //# sourceMappingURL=interfaces.js.map

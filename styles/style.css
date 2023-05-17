@@ -8,11 +8,9 @@
 }
 
 
-.side-bar-small{
-    display: block;
-    position: absolute;
-    visibility: visible;
-    width: 4.5rem
+.side-bar-div{
+    
+    width: 12rem
 
 }
 .no-show{
@@ -39,4 +37,9 @@
     align-items: center;
     justify-content: center;
 }
+.nav-bar-episodes{
+    height: 600px;
+    overflow-y: auto;
+}
+
 

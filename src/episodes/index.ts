@@ -53,17 +53,17 @@ export const createSeasonsList = async () => {
       const strongTitle = document.createElement("strong");
       strongTitle.textContent = season.name;
       linkSeason.appendChild(strongTitle);
-      const ulListofEpisodes = document.createElement("ul");
-      ulListofEpisodes.setAttribute(
+      const ulListOfEpisodes = document.createElement("ul");
+      ulListOfEpisodes.setAttribute(
         "class",
         "dropdown-menu dropdown-menu-dark text-small shadow"
       );
-      ulListofEpisodes.setAttribute("id", `episodesList-${season.id}`);
-      divDropdown.appendChild(ulListofEpisodes);
+      ulListOfEpisodes.setAttribute("id", `episodesList-${season.id}`);
+      divDropdown.appendChild(ulListOfEpisodes);
       linkSeason.onclick = function () {
         homeSeasons?.classList.remove("active");
         linkSeason.classList.toggle("active");
-        ulListofEpisodes.onclick = function () {
+        ulListOfEpisodes.onclick = function () {
           linkSeason.classList.remove("active");
         };
       };
@@ -73,7 +73,7 @@ export const createSeasonsList = async () => {
         const episodeLi = document.createElement("li");
         episodeLi.setAttribute("class", "dropdown-item");
         episodeLi.setAttribute("data-elementnumber", episode.id.toString());
-        ulListofEpisodes.appendChild(episodeLi);
+        ulListOfEpisodes.appendChild(episodeLi);
         const episodeLink = document.createElement("a");
         episodeLink.setAttribute("class", "dropdown-item ");
         episodeLink.setAttribute("type", "button");
@@ -265,7 +265,106 @@ async function fetchCharacter(characterId: number): Promise<Character> {
   return data;
 }
 
-async function createEpisodesNavBarList (Episode: Episode[]) {
- const ulListofEpisodes =
-  
-}
+export const createEpisodesNavBarList = async (): Promise<void> => {
+  try {
+    const episodes = await fetchEpisodes();
+    
+    episodes.forEach((episode) => {
+      // console.log(episodes)
+      const ulListOfEpisodes = document.getElementById(
+        "listOfEpisodes"
+      ) as HTMLElement;
+
+      const episodeLi = document.createElement("li");
+      episodeLi.setAttribute("class", "dropdown-item");
+      episodeLi.setAttribute("data-elementnumber", episode.id.toString());
+      ulListOfEpisodes.appendChild(episodeLi);
+      const episodeLink = document.createElement("a");
+      episodeLink.setAttribute("class", "dropdown-item ");
+      episodeLink.setAttribute("type", "button");
+      episodeLink.setAttribute("data-elementnumber", episode.id.toString());
+      episodeLink.textContent = `Episode: ${episode.id}, ${episode.name}`;
+      episodeLi.appendChild(episodeLink);
+
+      episodeLink.addEventListener("click", () => {
+        const containerMain = document.getElementById("containerMain");
+        console.log("funciona");
+        containerMain?.replaceChildren(); // Eliminar todos los hijos de containerMain
+        const episodeDiv = document.createElement("div");
+        episodeDiv.setAttribute("class", "row mb-4 text center");
+        const titleDiv = document.createElement("div");
+        titleDiv.setAttribute(
+          "class",
+          "col align-items-center justify-center text center"
+        );
+        episodeDiv.appendChild(titleDiv);
+        const h2Title = document.createElement("h2");
+        h2Title.textContent = ` ${episode.name}`;
+        titleDiv.appendChild(h2Title);
+        const h3Details = document.createElement("h3");
+        h3Details.textContent = `${episode.air_date} | Episode: ${episode.episode}`;
+
+        titleDiv.appendChild(h3Details);
+        const divContainerCharacters = document.createElement("div");
+        divContainerCharacters.setAttribute(
+          "class",
+          "row row-cols-1 row-cols-sm-4 row-cols-md-5 mx-1 g-3"
+        );
+        episodeDiv.appendChild(divContainerCharacters);
+        const characterPromises = (episode.characters || []).map(
+          (characterURL) => {
+            return fetch(characterURL)
+              .then((response) => response.json())
+              .catch((error) => {
+                console.error("Error fetching character data:", error);
+              });
+          }
+        );
+
+        Promise.all(characterPromises)
+          .then((characterDataArray) => {
+            characterDataArray.forEach((characterData) => {
+              const characterDiv = document.createElement("div");
+              characterDiv.setAttribute("class", "col card mx-1");
+              characterDiv.setAttribute("id", `character${characterData.id}`);
+
+              const characterImage = document.createElement("img");
+              characterImage.setAttribute("src", characterData.image);
+              characterDiv.appendChild(characterImage);
+
+              const pName = document.createElement("p");
+              pName.textContent = `Name: ${characterData.name}`;
+              characterDiv.appendChild(pName);
+
+              const pStatus = document.createElement("p");
+              pStatus.textContent = `Status: ${characterData.status}`;
+              characterDiv.appendChild(pStatus);
+
+              const pSpecies = document.createElement("p");
+              pSpecies.textContent = `Species: ${characterData.species}`;
+              characterDiv.appendChild(pSpecies);
+              const pGender = document.createElement("p");
+              pGender.textContent = `Gender: ${characterData.gender}`;
+              characterDiv.appendChild(pGender);
+              const pOrigin = document.createElement("p");
+              pOrigin.textContent = `Origin: ${characterData.origin.name}`;
+              characterDiv.appendChild(pOrigin);
+
+              divContainerCharacters.appendChild(characterDiv);
+              characterDiv.addEventListener("click", () =>
+                showCharacter(characterData.id)
+              );
+              console.log(characterData.id);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching character data:", error);
+          });
+
+        containerMain?.appendChild(episodeDiv);
+      });
+    });
+  } catch (error) {
+    console.error("Error getting the episodes", error);
+  }
+};

@@ -3,13 +3,10 @@ import { Location, LocationResponse } from "../interfaces.js";
 
 let allLocations: Location[] = [];
 
-const locationBtn = document.getElementById("locationsBtn");
-locationBtn?.addEventListener("click", showLocations);
 
 const fetchAllLocations = async (): Promise<Location[]> => {
   let nextPageUrl: string | null = urlLocations;
   let allLocations: Location[] = [];
-
   while (nextPageUrl) {
     const res = await fetch(nextPageUrl);
     const data: LocationResponse = await res.json();
@@ -17,11 +14,10 @@ const fetchAllLocations = async (): Promise<Location[]> => {
     allLocations = allLocations.concat(locations);
     nextPageUrl = data.info.next;
   }
-
   return allLocations;
 };
 
-// Mostrar los locations
+// Show locations
 export async function showLocations() {
   const locations = await fetchAllLocations();
 
@@ -36,11 +32,11 @@ export async function showLocations() {
   titleLocation.setAttribute("class", "text-align-left");
   divContainer.appendChild(titleLocation);
   titleLocation.textContent = "Locations";
+  
   const divUlLocations = document.createElement("div");
   divUlLocations.setAttribute("class", "overflow-auto");
   divUlLocations.style.maxHeight = "600px";
   divUlLocations.setAttribute("tabindex", "0");
-
   divContainer.appendChild(divUlLocations);
 
   const ulListOfLocations = document.createElement("ul");

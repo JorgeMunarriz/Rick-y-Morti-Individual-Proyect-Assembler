@@ -1,9 +1,9 @@
-import { urlCharacters } from "../utils/urlApi.js";
+import { urlCharacters } from "../utils/urlApi";
 import {
   ResultCharacter,
   Character,
   CharacterLocation, Location
-} from "../interfaces.js";
+} from "../interfaces";
 
 export const getCharacters = async () => {
   try {
@@ -35,7 +35,7 @@ const fetchCharacter = async (): Promise<Character[]> => {
         status: characterData.status,
         species: characterData.species,
         image: characterData.image,
-        location: characterData.location.name,
+        location: characterData.name,
   
       };
     });

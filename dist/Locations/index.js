@@ -9,8 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { urlLocations } from "../utils/urlApi.js";
 let allLocations = [];
-const locationBtn = document.getElementById("locationsBtn");
-locationBtn === null || locationBtn === void 0 ? void 0 : locationBtn.addEventListener("click", showLocations);
 const fetchAllLocations = () => __awaiter(void 0, void 0, void 0, function* () {
     let nextPageUrl = urlLocations;
     let allLocations = [];

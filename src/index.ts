@@ -1,28 +1,28 @@
+console.log("errorr");
 import { logIn } from "./utils/signIn.js";
-import {searchElements} from "./utils/urlApi.js"
-import { createSeasonsList } from "./episodes/index.js";
-import { changeThemesAdd  } from "./changeThemes/index.js";
+import { searchElements } from "./utils/urlApi.js";
+import { createSeasonsList, createEpisodesNavBarList,} from "./episodes/index.js";
+import { changeThemesAdd } from "./changeThemes/index.js";
 import { showLocations } from "./Locations/index.js";
-import { getCharacters } from "./characters/characters.js";
+import { getCharacters } from "./characters/index.js";
 
-
-window.onload= function() {
-  changeThemesAdd(); 
-  createSeasonsList();  
+console.log("errorr");
+window.onload = function () {
+  changeThemesAdd();
+  createSeasonsList();
   getCharacters();
-  
+  createEpisodesNavBarList();
+
   const buttonShowLocations = document.getElementById("locationsBtn");
   buttonShowLocations?.addEventListener("click", showLocations);
   const buttonSearchNames = document.getElementById("searchBtn");
-buttonSearchNames?.addEventListener("click", () => {
-  const searchTerm = (document.getElementById("inputSearch") as HTMLInputElement).value;
-  searchElements(searchTerm);
-});
-}
-
-
-
-
+  buttonSearchNames?.addEventListener("click", () => {
+    const searchTerm = (
+      document.getElementById("inputSearch") as HTMLInputElement
+    ).value;
+    searchElements(searchTerm);
+  });
+};
 
 // const fetchEpisodes = async (): Promise<Episode[]> => {
 //   let allEpisodes: Episode[] = [];
@@ -174,7 +174,7 @@ buttonSearchNames?.addEventListener("click", () => {
 //                 divContainerCharacters.appendChild(characterDiv);
 //                 characterDiv.addEventListener("click", () =>
 //                   showCharacter(characterData.id)
-                  
+
 //                 );
 //                 console.log(characterData.id)
 //               });
@@ -194,7 +194,6 @@ buttonSearchNames?.addEventListener("click", () => {
 
 // populateSeasons();
 
-
 // function getCharacters (){
 //  const character = (urlCharacters);
 //  character
@@ -202,10 +201,6 @@ buttonSearchNames?.addEventListener("click", () => {
 //   .then (data => )
 
 // }
-
-
-
-
 
 // let allLocations: Location[] = [];
 
@@ -325,8 +320,6 @@ buttonSearchNames?.addEventListener("click", () => {
 //       console.error("Error fetching character data:", error);
 //     });
 // }
-
-
 
 // Llamar a la función showLocations cuando se hace clic en el botón
 
