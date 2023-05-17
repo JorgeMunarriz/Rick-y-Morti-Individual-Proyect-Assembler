@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { urlCharacters } from "../utils/urlApi";
+import { urlCharacters } from "../utils/urlApi.js";
 export const getCharacters = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const characterBtn = document.getElementById("charactersBtn");

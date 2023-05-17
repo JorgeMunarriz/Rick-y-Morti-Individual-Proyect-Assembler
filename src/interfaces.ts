@@ -116,4 +116,4 @@ export interface Character {
     url: string
   }
 
-  console.log("hola")
+  

@@ -1,9 +1,9 @@
-import { urlCharacters } from "../utils/urlApi";
+import { urlCharacters } from "../utils/urlApi.js";
 import {
   ResultCharacter,
   Character,
   CharacterLocation, Location
-} from "../interfaces";
+} from "../interfaces.js";
 
 export const getCharacters = async () => {
   try {
