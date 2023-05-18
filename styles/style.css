@@ -8,7 +8,8 @@
 }
 
 .side-bar-div{    
-    width: 12rem
+    width: 12rem;
+    transition: 0.5s ease-in-out;
 }
 .no-show{
     display: none;
@@ -34,7 +35,36 @@
     height: 600px;
     overflow-y: auto;
 }
+.div-trailer{
+    max-width: 600px;
+    min-width: 300px;
+}
+
+
+.iframe-youtube{
+    width: 100%;
+    height: 100%;
+}
+.btn{
+    transition: 0.5s ease-in-out;
+}
+.btn:hover{
+  transform: scale(1.1);
+}
 
 
 
 
+@media screen and (max-width: 500px){
+   .side-bar-div{
+    width: 7rem;
+   } 
+}
+
+
+
+::-webkit-scrollbar{
+    width: 5px;
+  height: 8px;
+  background-color: #c0d3c2; 
+}

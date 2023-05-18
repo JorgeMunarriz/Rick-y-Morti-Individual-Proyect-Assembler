@@ -1,4 +1,8 @@
 export function logIn() {
+    function clearConsole() {
+        console.clear();
+    }
+    setTimeout(clearConsole, 200);
     const loginForm = document.getElementById("loginForm");
     const userInput = document.getElementById("userName");
     const emailInput = document.getElementById("floatingInput");
@@ -54,9 +58,9 @@ export function logIn() {
     signOutBtn.addEventListener("click", handleLogout);
     showPassBtn.addEventListener("click", togglePasswordVisibility1);
     showPassBtn1.addEventListener("click", togglePasswordVisibility2);
-    let boxItem = document.querySelector('.form-item');
+    let boxItem = document.getElementById('user');
     let boxItemEmail = document.getElementById('email');
-    let boxItemPass = document.getElementById('password1');
+    let boxItemPass = document.getElementById('password');
     let boxItemPass1 = document.getElementById('confirmPass');
     const errorUser = document.createElement('div');
     errorUser.textContent = "This field should be complete";

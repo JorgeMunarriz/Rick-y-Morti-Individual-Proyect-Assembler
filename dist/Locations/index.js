@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { urlLocations } from "../utils/urlApi.js";
 import { showCharacter } from "../characters/index.js";
-let allLocations = [];
 const fetchAllLocations = () => __awaiter(void 0, void 0, void 0, function* () {
     let nextPageUrl = urlLocations;
     let allLocations = [];
@@ -24,7 +23,7 @@ const fetchAllLocations = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 export function getLocations() {
     const buttonShowLocations = document.getElementById("locationsBtn");
-    buttonShowLocations === null || buttonShowLocations === void 0 ? void 0 : buttonShowLocations.addEventListener("click", showLocations);
+    buttonShowLocations.addEventListener("click", showLocations);
     function showLocations() {
         return __awaiter(this, void 0, void 0, function* () {
             const locations = yield fetchAllLocations();

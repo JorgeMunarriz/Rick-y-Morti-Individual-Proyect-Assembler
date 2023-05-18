@@ -34,8 +34,8 @@ const fetchCharacters = () => __awaiter(void 0, void 0, void 0, function* () {
                 status: characterData.status,
                 species: characterData.species,
                 image: characterData.image,
-                location: characterData.name,
-                origin: characterData.name
+                location: characterData.location.name,
+                origin: characterData.origin.name,
             };
         });
         allCharacters = allCharacters.concat(characters);
@@ -47,6 +47,7 @@ const createPagination = (totalPages, page, characters) => {
     const containerMain = document.getElementById("containerMain");
     const paginationContainer = document.createElement("div");
     paginationContainer.setAttribute("id", "paginationContainer");
+    paginationContainer.setAttribute("class", "");
     if (!paginationContainer)
         return;
     paginationContainer.innerHTML = "";
@@ -136,10 +137,10 @@ function showCharacters(characters, totalPages, page) {
         pGender.textContent = `Gender: ${character.gender}`;
         characterDiv.appendChild(pGender);
         const pOrigin = document.createElement("p");
-        pOrigin.textContent = `Origin: ${character.origin.name}`;
+        pOrigin.textContent = `Origin: ${character.origin}`;
         characterDiv.appendChild(pOrigin);
         const pLocation = document.createElement("p");
-        pLocation.textContent = `Location: ${character.location.name}`;
+        pLocation.textContent = `Location: ${character.location}`;
         characterDiv.appendChild(pLocation);
         characterDiv.addEventListener("click", () => showCharacter(character.id));
     });
@@ -154,7 +155,7 @@ export function showCharacter(characterId) {
             const characterData = characterResponse;
             const characterDetailsContainer = document.createElement("div");
             characterDetailsContainer.setAttribute("class", "character-details ");
-            containerMain === null || containerMain === void 0 ? void 0 : containerMain.appendChild(characterDetailsContainer);
+            containerMain.appendChild(characterDetailsContainer);
             const characterImage = document.createElement("img");
             characterImage.setAttribute("src", characterData.image);
             characterDetailsContainer.appendChild(characterImage);

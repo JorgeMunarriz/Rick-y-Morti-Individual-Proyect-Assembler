@@ -1,4 +1,8 @@
 export function logIn(): void {
+  function clearConsole (){
+    console.clear();    
+  }
+  setTimeout(clearConsole, 200)
   
   const loginForm = document.getElementById("loginForm") as HTMLFormElement;
   const userInput = document.getElementById("userName") as HTMLInputElement
@@ -11,13 +15,13 @@ export function logIn(): void {
   const headerContainer = document.getElementById("headerContainer") as HTMLElement;
   const sideBar = document.getElementById("sideBarBig") as HTMLElement;
   
-  const containerMain = document.getElementById("containerMain") as HTMLElement;
-  const containerFooter = document.getElementById("containerFooter") as HTMLElement;
-  const formSignInDiv = document.getElementById("formSignInDiv") as HTMLElement;
+  const containerMain = document.getElementById("containerMain") as HTMLDivElement;
+  const containerFooter = document.getElementById("containerFooter") as HTMLDivElement;
+  const formSignInDiv = document.getElementById("formSignInDiv") as HTMLDivElement;
   const showPassBtn = document.getElementById("eye1") as HTMLElement;
   const showPassBtn1 = document.getElementById("eye2") as HTMLElement;
 
-  // Oculta los elementos principales y muestra el formulario de inicio de sesión
+  // Hide the main elements and show the login form
   const showLoginForm = (): void => {
     formSignInDiv.style.display = "flex" 
     headerContainer.style.display = "none";
@@ -27,7 +31,7 @@ export function logIn(): void {
     containerFooter.style.display = "none";
   };
 
-  // Muestra los elementos principales y oculta el formulario de inicio de sesión
+  // Show the main elements and hide the login form
   const showMainContent = (): void => {
     formSignInDiv.style.display = "none";
     headerContainer.style.display = "block";
@@ -36,7 +40,7 @@ export function logIn(): void {
     containerFooter.style.display = "block";
   };
 
-  // Función para manejar el evento de inicio de sesión
+  // Function to handle the login event
   const handleLogin = (event: Event): void => {
     event.preventDefault();
     const userName = userInput.value;
@@ -45,13 +49,13 @@ export function logIn(): void {
     const passwordConfirm = passwordInput2.value;
 
     if (password !== passwordConfirm) {
-      // Las contraseñas no coinciden, puedes mostrar un mensaje de error aquí si deseas
+      // Passwords do not match, you can show an error message here if you want
       return;
     }
      localStorage.setItem("userName", userName)
      localStorage.setItem("email", email)
      localStorage.setItem("password", password)
-     const userButton = document.getElementById("User") as HTMLElement
+     const userButton = document.getElementById("User") as HTMLButtonElement;
      if (userButton) {
        userButton.textContent = userName;
      }
@@ -59,11 +63,11 @@ export function logIn(): void {
     showMainContent();
   };
 
-  // Función para manejar el evento de cierre de sesión
+  // Function to handle the logout event
   const handleLogout = (): void => {
-    // Aquí puedes realizar cualquier tarea de cierre de sesión, como eliminar las credenciales del usuario
+    
 
-    // Mostrar el formulario de inicio de sesión después de cerrar sesión
+    // Show login form after logoff
     showLoginForm();
   };
 
@@ -76,26 +80,26 @@ export function logIn(): void {
   showPassBtn1.addEventListener("click", togglePasswordVisibility2);
 
   
-  let boxItem = document.querySelector('.form-item') as HTMLDivElement
-  let boxItemEmail = document.getElementById('email') as HTMLDivElement
-  let boxItemPass = document.getElementById('password1') as HTMLDivElement
-  let boxItemPass1 = document.getElementById('confirmPass') as HTMLDivElement
-  const errorUser = document.createElement('div');
+  let boxItem  = document.getElementById('user') as HTMLDivElement;
+  let boxItemEmail = document.getElementById('email') as HTMLDivElement;
+  let boxItemPass = document.getElementById('password') as HTMLDivElement;
+  let boxItemPass1 = document.getElementById('confirmPass') as HTMLDivElement;
+  const errorUser = document.createElement('div') as HTMLDivElement;
   errorUser.textContent = "This field should be complete"
   errorUser.className = 'error';
   const userMsgError = errorUser;
 
-  const errorEmail = document.createElement('div');
+  const errorEmail = document.createElement('div') as HTMLDivElement;
   errorEmail.textContent = "This field is not properly formatted"
   errorEmail.className = 'error-input';
   const emailMsgError = errorEmail;
 
-  const errorPass = document.createElement('div');
+  const errorPass = document.createElement('div') as HTMLDivElement;
   errorPass.className = 'error-input';
   errorPass.textContent = "This field is not properly formatted"
   const passMsgError = errorPass;
   
-  const errorPass1 = document.createElement('div');
+  const errorPass1 = document.createElement('div') as HTMLDivElement;
   errorPass1.textContent = "This fields doesn't match"
   errorPass1.className = 'error-input';
   const confPassMsgError = errorPass1;

@@ -2,7 +2,6 @@ import { urlLocations } from "../utils/urlApi.js";
 import { Location, LocationResponse } from "../interfaces.js";
 import { showCharacter } from "../characters/index.js";
 
-let allLocations: Location[] = [];
 
 const fetchAllLocations = async (): Promise<Location[]> => {
   let nextPageUrl: string | null = urlLocations;
@@ -19,37 +18,37 @@ const fetchAllLocations = async (): Promise<Location[]> => {
 
 // Show list of all locations
 export function getLocations() {
-  const buttonShowLocations = document.getElementById("locationsBtn");
-  buttonShowLocations?.addEventListener("click", showLocations);
+  const buttonShowLocations = document.getElementById("locationsBtn") as HTMLButtonElement;
+  buttonShowLocations.addEventListener("click", showLocations);
   async function showLocations() {
     const locations = await fetchAllLocations();
 
     const container = document.getElementById("containerMain") as HTMLElement;
     container.replaceChildren();
 
-    const divContainer = document.createElement("div");
+    const divContainer = document.createElement("div") as HTMLDivElement;
     divContainer.setAttribute("class", "container");
     container.appendChild(divContainer);
 
-    const titleLocation = document.createElement("h2");
+    const titleLocation = document.createElement("h2") as HTMLHeadingElement;
     titleLocation.setAttribute("class", "text-align-left");
     divContainer.appendChild(titleLocation);
     titleLocation.textContent = "Locations";
 
-    const divUlLocations = document.createElement("div");
+    const divUlLocations = document.createElement("div") as HTMLDivElement;
     divUlLocations.setAttribute("class", "overflow-auto");
     divUlLocations.style.maxHeight = "600px";
     divUlLocations.setAttribute("tabindex", "0");
     divContainer.appendChild(divUlLocations);
 
-    const ulListOfLocations = document.createElement("ul");
+    const ulListOfLocations = document.createElement("ul") as HTMLUListElement;
     ulListOfLocations.setAttribute("class", "list-group");
     divUlLocations.appendChild(ulListOfLocations);
 
     locations.forEach((location) => {
-      const listLocation = document.createElement("li");
+      const listLocation = document.createElement("li") as HTMLLIElement;
       listLocation.setAttribute("class", "list-group-item");
-      const linkLocation = document.createElement("a");
+      const linkLocation = document.createElement("a") as HTMLAnchorElement;
       linkLocation.setAttribute("class", "link-item");
       linkLocation.textContent = location.name;
       linkLocation.addEventListener("click", () => showLocation(location));
@@ -63,19 +62,19 @@ function showLocation(location: Location) {
   const container = document.getElementById("containerMain") as HTMLElement;
   container.replaceChildren();
 
-  const locationDiv = document.createElement("div");
-  locationDiv.setAttribute("class", "location-details container");
+  const locationDiv = document.createElement("div") as HTMLDivElement;
+  locationDiv.setAttribute("class", "location-details container") ;
   container.appendChild(locationDiv);
 
-  const titleLocation = document.createElement("h2");
+  const titleLocation = document.createElement("h2") as HTMLHeadingElement;
   titleLocation.textContent = location.name;
   locationDiv.appendChild(titleLocation);
 
-  const locationInfo = document.createElement("p");
+  const locationInfo = document.createElement("p") as HTMLParagraphElement;
   locationInfo.textContent = `Type: ${location.type} | Dimension: ${location.dimension}`;
   locationDiv.appendChild(locationInfo);
 
-  const residentsContainer = document.createElement("div");
+  const residentsContainer = document.createElement("div") as HTMLDivElement;
   residentsContainer.setAttribute(
     "class",
     "row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-5 p-2"
@@ -94,27 +93,27 @@ function showLocation(location: Location) {
   Promise.all(characterPromises)
     .then((characterDataArray) => {
       characterDataArray.forEach((characterData) => {
-        const residentDiv = document.createElement("div");
+        const residentDiv = document.createElement("div") as HTMLDivElement;
         residentDiv.setAttribute("class", "col card mx-1 p-0 text-center");
         residentsContainer.appendChild(residentDiv);
 
-        const characterImage = document.createElement("img");
+        const characterImage = document.createElement("img") as HTMLImageElement;
         characterImage.setAttribute("class", "w-100");
         characterImage.setAttribute("src", characterData.image);
         residentDiv.appendChild(characterImage);
 
-        const pName = document.createElement("p");
+        const pName = document.createElement("p") as HTMLParagraphElement;
         pName.textContent = `Name: ${characterData.name}`;
         residentDiv.appendChild(pName);
 
-        const pStatus = document.createElement("p");
+        const pStatus = document.createElement("p") as HTMLParagraphElement;
         pStatus.textContent = `Status: ${characterData.status}`;
         residentDiv.appendChild(pStatus);
 
-        const pSpecies = document.createElement("p");
+        const pSpecies = document.createElement("p") as HTMLParagraphElement;
         pSpecies.textContent = `Species: ${characterData.species}`;
         residentDiv.appendChild(pSpecies);
-        const pOrigin = document.createElement("p");
+        const pOrigin = document.createElement("p") as HTMLParagraphElement;
         pOrigin.textContent = `Origin: ${characterData.location.name}`;
         residentDiv.appendChild(pOrigin);
         residentDiv.addEventListener("click", () =>

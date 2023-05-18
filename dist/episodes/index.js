@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { urlEpisodes } from "../utils/urlApi.js";
 import { seasons } from "../interfaces.js";
 import { showCharacter } from "../characters/index.js";
-const listSeasons = [];
 const ulListSeasons = document.getElementById("ulListSeason");
 export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -89,7 +88,7 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
                     h3Details.textContent = `Air Date: ${episode.air_date} | Episode: ${episode.episode}`;
                     titleDiv.appendChild(h3Details);
                     const divContainerCharacters = document.createElement("div");
-                    divContainerCharacters.setAttribute("class", "row row-cols-1 row-cols-sm-4 row-cols-md-5 mx-1 g-3");
+                    divContainerCharacters.setAttribute("class", "row row-cols-1 row-cols-sm-4 row-cols-md-5 mx-1 g-3 ");
                     episodeDiv.appendChild(divContainerCharacters);
                     const characterPromises = (episode.characters || []).map((characterURL) => {
                         return fetch(characterURL)
@@ -129,7 +128,7 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
                         .catch((error) => {
                         console.error("Error fetching character data:", error);
                     });
-                    containerMain === null || containerMain === void 0 ? void 0 : containerMain.appendChild(episodeDiv);
+                    containerMain.appendChild(episodeDiv);
                 });
             });
         });
@@ -175,8 +174,7 @@ export const createEpisodesNavBarList = () => __awaiter(void 0, void 0, void 0, 
             episodeLi.appendChild(episodeLink);
             episodeLink.addEventListener("click", () => {
                 const containerMain = document.getElementById("containerMain");
-                console.log("funciona");
-                containerMain === null || containerMain === void 0 ? void 0 : containerMain.replaceChildren();
+                containerMain.replaceChildren();
                 const episodeDiv = document.createElement("div");
                 episodeDiv.setAttribute("class", "row mb-4 text center");
                 const titleDiv = document.createElement("div");
@@ -224,13 +222,12 @@ export const createEpisodesNavBarList = () => __awaiter(void 0, void 0, void 0, 
                         characterDiv.appendChild(pOrigin);
                         divContainerCharacters.appendChild(characterDiv);
                         characterDiv.addEventListener("click", () => showCharacter(characterData.id));
-                        console.log(characterData.id);
                     });
                 })
                     .catch((error) => {
                     console.error("Error fetching character data:", error);
                 });
-                containerMain === null || containerMain === void 0 ? void 0 : containerMain.appendChild(episodeDiv);
+                containerMain.appendChild(episodeDiv);
             });
         });
     }
