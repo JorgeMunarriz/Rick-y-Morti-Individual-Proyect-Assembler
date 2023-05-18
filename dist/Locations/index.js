@@ -22,37 +22,41 @@ const fetchAllLocations = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     return allLocations;
 });
-export function showLocations() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const locations = yield fetchAllLocations();
-        const container = document.getElementById("containerMain");
-        container.replaceChildren();
-        const divContainer = document.createElement("div");
-        divContainer.setAttribute("class", "container");
-        container.appendChild(divContainer);
-        const titleLocation = document.createElement("h2");
-        titleLocation.setAttribute("class", "text-align-left");
-        divContainer.appendChild(titleLocation);
-        titleLocation.textContent = "Locations";
-        const divUlLocations = document.createElement("div");
-        divUlLocations.setAttribute("class", "overflow-auto");
-        divUlLocations.style.maxHeight = "600px";
-        divUlLocations.setAttribute("tabindex", "0");
-        divContainer.appendChild(divUlLocations);
-        const ulListOfLocations = document.createElement("ul");
-        ulListOfLocations.setAttribute("class", "list-group");
-        divUlLocations.appendChild(ulListOfLocations);
-        locations.forEach((location) => {
-            const listLocation = document.createElement("li");
-            listLocation.setAttribute("class", "list-group-item");
-            const linkLocation = document.createElement("a");
-            linkLocation.setAttribute("class", "link-item");
-            linkLocation.textContent = location.name;
-            linkLocation.addEventListener("click", () => showLocation(location));
-            listLocation.appendChild(linkLocation);
-            ulListOfLocations.appendChild(listLocation);
+export function getLocations() {
+    const buttonShowLocations = document.getElementById("locationsBtn");
+    buttonShowLocations === null || buttonShowLocations === void 0 ? void 0 : buttonShowLocations.addEventListener("click", showLocations);
+    function showLocations() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const locations = yield fetchAllLocations();
+            const container = document.getElementById("containerMain");
+            container.replaceChildren();
+            const divContainer = document.createElement("div");
+            divContainer.setAttribute("class", "container");
+            container.appendChild(divContainer);
+            const titleLocation = document.createElement("h2");
+            titleLocation.setAttribute("class", "text-align-left");
+            divContainer.appendChild(titleLocation);
+            titleLocation.textContent = "Locations";
+            const divUlLocations = document.createElement("div");
+            divUlLocations.setAttribute("class", "overflow-auto");
+            divUlLocations.style.maxHeight = "600px";
+            divUlLocations.setAttribute("tabindex", "0");
+            divContainer.appendChild(divUlLocations);
+            const ulListOfLocations = document.createElement("ul");
+            ulListOfLocations.setAttribute("class", "list-group");
+            divUlLocations.appendChild(ulListOfLocations);
+            locations.forEach((location) => {
+                const listLocation = document.createElement("li");
+                listLocation.setAttribute("class", "list-group-item");
+                const linkLocation = document.createElement("a");
+                linkLocation.setAttribute("class", "link-item");
+                linkLocation.textContent = location.name;
+                linkLocation.addEventListener("click", () => showLocation(location));
+                listLocation.appendChild(linkLocation);
+                ulListOfLocations.appendChild(listLocation);
+            });
         });
-    });
+    }
 }
 function showLocation(location) {
     const container = document.getElementById("containerMain");

@@ -3,8 +3,15 @@ export const urlCharacters = `${urlApi}/character`;
 export const urlLocations = `${urlApi}/location`;
 export const urlEpisodes = `${urlApi}/episode`;
 
-export const searchElements = async (searchTerm: string) => {
-    console.log("eso ees")
+export function webPageSearchEngine(){
+  const buttonSearchNames = document.getElementById("searchBtn");
+  buttonSearchNames?.addEventListener("click", () => {
+    const searchTerm = (
+      document.getElementById("inputSearch") as HTMLInputElement
+    ).value;
+    searchElements(searchTerm);
+  });
+const searchElements = async (searchTerm: string) => {
     const containerMain = document.getElementById("containerMain") as HTMLElement;
     containerMain.replaceChildren();
   
@@ -127,3 +134,5 @@ export const searchElements = async (searchTerm: string) => {
       console.error("Error fetching data:", error);
     }
   };
+
+}

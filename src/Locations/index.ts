@@ -17,42 +17,46 @@ const fetchAllLocations = async (): Promise<Location[]> => {
   return allLocations;
 };
 
-// Show list of all locations 
-export async function showLocations() {
-  const locations = await fetchAllLocations();
+// Show list of all locations
+export function getLocations() {
+  const buttonShowLocations = document.getElementById("locationsBtn");
+  buttonShowLocations?.addEventListener("click", showLocations);
+  async function showLocations() {
+    const locations = await fetchAllLocations();
 
-  const container = document.getElementById("containerMain") as HTMLElement;
-  container.replaceChildren();
+    const container = document.getElementById("containerMain") as HTMLElement;
+    container.replaceChildren();
 
-  const divContainer = document.createElement("div");
-  divContainer.setAttribute("class", "container");
-  container.appendChild(divContainer);
+    const divContainer = document.createElement("div");
+    divContainer.setAttribute("class", "container");
+    container.appendChild(divContainer);
 
-  const titleLocation = document.createElement("h2");
-  titleLocation.setAttribute("class", "text-align-left");
-  divContainer.appendChild(titleLocation);
-  titleLocation.textContent = "Locations";
+    const titleLocation = document.createElement("h2");
+    titleLocation.setAttribute("class", "text-align-left");
+    divContainer.appendChild(titleLocation);
+    titleLocation.textContent = "Locations";
 
-  const divUlLocations = document.createElement("div");
-  divUlLocations.setAttribute("class", "overflow-auto");
-  divUlLocations.style.maxHeight = "600px";
-  divUlLocations.setAttribute("tabindex", "0");
-  divContainer.appendChild(divUlLocations);
+    const divUlLocations = document.createElement("div");
+    divUlLocations.setAttribute("class", "overflow-auto");
+    divUlLocations.style.maxHeight = "600px";
+    divUlLocations.setAttribute("tabindex", "0");
+    divContainer.appendChild(divUlLocations);
 
-  const ulListOfLocations = document.createElement("ul");
-  ulListOfLocations.setAttribute("class", "list-group");
-  divUlLocations.appendChild(ulListOfLocations);
+    const ulListOfLocations = document.createElement("ul");
+    ulListOfLocations.setAttribute("class", "list-group");
+    divUlLocations.appendChild(ulListOfLocations);
 
-  locations.forEach((location) => {
-    const listLocation = document.createElement("li");
-    listLocation.setAttribute("class", "list-group-item");
-    const linkLocation = document.createElement("a");
-    linkLocation.setAttribute("class", "link-item");
-    linkLocation.textContent = location.name;
-    linkLocation.addEventListener("click", () => showLocation(location));
-    listLocation.appendChild(linkLocation);
-    ulListOfLocations.appendChild(listLocation);
-  });
+    locations.forEach((location) => {
+      const listLocation = document.createElement("li");
+      listLocation.setAttribute("class", "list-group-item");
+      const linkLocation = document.createElement("a");
+      linkLocation.setAttribute("class", "link-item");
+      linkLocation.textContent = location.name;
+      linkLocation.addEventListener("click", () => showLocation(location));
+      listLocation.appendChild(linkLocation);
+      ulListOfLocations.appendChild(listLocation);
+    });
+  }
 }
 // Show details of specifiec Location
 function showLocation(location: Location) {
@@ -114,8 +118,8 @@ function showLocation(location: Location) {
         pOrigin.textContent = `Origin: ${characterData.location.name}`;
         residentDiv.appendChild(pOrigin);
         residentDiv.addEventListener("click", () =>
-                  showCharacter(characterData.id)
-                );
+          showCharacter(characterData.id)
+        );
       });
     })
     .catch((error) => {

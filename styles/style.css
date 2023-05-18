@@ -7,39 +7,34 @@
     background: rgb(151,206,76);
 }
 
-
-.side-bar-div{
-    
+.side-bar-div{    
     width: 12rem
-
 }
 .no-show{
     display: none;
 }
 
-.form-div{
-    display: none;
-    width: 60%;
-    
+.sign-in-display{
+    display: flex;
+    width: 60%;    
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    
-
 }
+.error-nput{
+    font-size: 20px;
+    color: red;
+    width: 30%;
+    background-color: black;
+    font-weight: bold;
+    margin-top:5px;
+  }
 
-
-.form-center{
-    display: none;
-    flex-direction: column;
-
-    position: relative;
-    align-items: center;
-    justify-content: center;
-}
 .nav-bar-episodes{
     height: 600px;
     overflow-y: auto;
 }
+
+
 
 
