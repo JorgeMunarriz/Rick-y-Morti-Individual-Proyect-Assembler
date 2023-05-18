@@ -3,43 +3,61 @@
     letter-spacing: 2px;
 }
 
-.header-bg-green{
-    background: rgb(151,206,76);
+.side-bar-div{    
+    width: 12rem;
+    transition: 0.5s ease-in-out;
 }
 
-
-.side-bar-div{
-    
-    width: 12rem
-
-}
-.no-show{
-    display: none;
-}
-
-.form-div{
-    display: none;
-    width: 60%;
-    
+.sign-in-display{
+    display: flex;
+    width: 60%;    
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    
-
 }
+.error-input{
+    font-size: 20px;
+    color: red;
+    width: 30%;
+    background-color: black;
+    font-weight: bold;
+    margin-top:5px;
+  }
 
-
-.form-center{
-    display: none;
-    flex-direction: column;
-
-    position: relative;
-    align-items: center;
-    justify-content: center;
-}
 .nav-bar-episodes{
     height: 600px;
     overflow-y: auto;
 }
+.div-trailer{
+    max-width: 600px;
+    min-width: 300px;
+}
 
 
+.iframe-youtube{
+    width: 100%;
+    height: 100%;
+}
+.btn{
+    transition: 0.5s ease-in-out;
+}
+.btn:hover{
+  transform: scale(1.1);
+}
+
+
+
+
+@media screen and (max-width: 500px){
+   .side-bar-div{
+    width: 7rem;
+   } 
+}
+
+
+
+::-webkit-scrollbar{
+    width: 5px;
+  height: 8px;
+  background-color: #c0d3c2; 
+}

@@ -2,6 +2,7 @@
   "name": "rick-y-morty-individual-project",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "script.js",
   "dependencies": {
     "acorn": "^8.8.2",

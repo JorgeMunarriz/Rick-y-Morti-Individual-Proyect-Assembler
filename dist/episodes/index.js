@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { urlEpisodes } from "../utils/urlApi.js";
 import { seasons } from "../interfaces.js";
-const listSeasons = [];
+import { showCharacter } from "../characters/index.js";
 const ulListSeasons = document.getElementById("ulListSeason");
 export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -39,7 +39,7 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
             const homeSeasons = document.getElementById("homeSeasons");
             const seasonLi = document.createElement("li");
             seasonLi.setAttribute("class", "nav-item pe-auto");
-            ulListSeasons === null || ulListSeasons === void 0 ? void 0 : ulListSeasons.appendChild(seasonLi);
+            ulListSeasons.appendChild(seasonLi);
             const divDropdown = document.createElement("div");
             divDropdown.setAttribute("class", "dropdown");
             seasonLi.appendChild(divDropdown);
@@ -56,7 +56,7 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
             ulListOfEpisodes.setAttribute("id", `episodesList-${season.id}`);
             divDropdown.appendChild(ulListOfEpisodes);
             linkSeason.onclick = function () {
-                homeSeasons === null || homeSeasons === void 0 ? void 0 : homeSeasons.classList.remove("active");
+                homeSeasons.classList.remove("active");
                 linkSeason.classList.toggle("active");
                 ulListOfEpisodes.onclick = function () {
                     linkSeason.classList.remove("active");
@@ -75,8 +75,7 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
                 episodeLi.appendChild(episodeLink);
                 episodeLink.addEventListener("click", () => {
                     const containerMain = document.getElementById("containerMain");
-                    console.log("funciona");
-                    containerMain === null || containerMain === void 0 ? void 0 : containerMain.replaceChildren();
+                    containerMain.replaceChildren();
                     const episodeDiv = document.createElement("div");
                     episodeDiv.setAttribute("class", "row mb-4 text center");
                     const titleDiv = document.createElement("div");
@@ -86,10 +85,10 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
                     h2Title.textContent = ` ${episode.name}`;
                     titleDiv.appendChild(h2Title);
                     const h3Details = document.createElement("h3");
-                    h3Details.textContent = `${episode.air_date} | Episode: ${episode.episode}`;
+                    h3Details.textContent = `Air Date: ${episode.air_date} | Episode: ${episode.episode}`;
                     titleDiv.appendChild(h3Details);
                     const divContainerCharacters = document.createElement("div");
-                    divContainerCharacters.setAttribute("class", "row row-cols-1 row-cols-sm-4 row-cols-md-5 mx-1 g-3");
+                    divContainerCharacters.setAttribute("class", "row row-cols-1 row-cols-sm-4 row-cols-md-5 mx-1 g-3 ");
                     episodeDiv.appendChild(divContainerCharacters);
                     const characterPromises = (episode.characters || []).map((characterURL) => {
                         return fetch(characterURL)
@@ -100,37 +99,36 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
                     });
                     Promise.all(characterPromises)
                         .then((characterDataArray) => {
-                        characterDataArray.forEach((characterData) => {
+                        characterDataArray.forEach((character) => {
                             const characterDiv = document.createElement("div");
                             characterDiv.setAttribute("class", "col card mx-1");
-                            characterDiv.setAttribute("id", `character${characterData.id}`);
+                            characterDiv.setAttribute("id", `character${character.id}`);
                             const characterImage = document.createElement("img");
-                            characterImage.setAttribute("src", characterData.image);
+                            characterImage.setAttribute("src", character.image);
                             characterDiv.appendChild(characterImage);
                             const pName = document.createElement("p");
-                            pName.textContent = `Name: ${characterData.name}`;
+                            pName.textContent = `Name: ${character.name}`;
                             characterDiv.appendChild(pName);
                             const pStatus = document.createElement("p");
-                            pStatus.textContent = `Status: ${characterData.status}`;
+                            pStatus.textContent = `Status: ${character.status}`;
                             characterDiv.appendChild(pStatus);
                             const pSpecies = document.createElement("p");
-                            pSpecies.textContent = `Species: ${characterData.species}`;
+                            pSpecies.textContent = `Species: ${character.species}`;
                             characterDiv.appendChild(pSpecies);
                             const pGender = document.createElement("p");
-                            pGender.textContent = `Gender: ${characterData.gender}`;
+                            pGender.textContent = `Gender: ${character.gender}`;
                             characterDiv.appendChild(pGender);
                             const pOrigin = document.createElement("p");
-                            pOrigin.textContent = `Origin: ${characterData.origin.name}`;
+                            pOrigin.textContent = `Origin: ${character.origin.name}`;
                             characterDiv.appendChild(pOrigin);
                             divContainerCharacters.appendChild(characterDiv);
-                            characterDiv.addEventListener("click", () => showCharacter(characterData.id));
-                            console.log(characterData.id);
+                            characterDiv.addEventListener("click", () => showCharacter(character.id));
                         });
                     })
                         .catch((error) => {
                         console.error("Error fetching character data:", error);
                     });
-                    containerMain === null || containerMain === void 0 ? void 0 : containerMain.appendChild(episodeDiv);
+                    containerMain.appendChild(episodeDiv);
                 });
             });
         });
@@ -159,69 +157,6 @@ const fetchEpisodes = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     return allEpisodes;
 });
-function showCharacter(characterId) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const containerMain = document.getElementById("containerMain");
-            containerMain === null || containerMain === void 0 ? void 0 : containerMain.replaceChildren();
-            const characterResponse = yield fetchCharacter(characterId);
-            const characterData = characterResponse;
-            const characterDetailsContainer = document.createElement("div");
-            characterDetailsContainer.setAttribute("class", "character-details");
-            containerMain === null || containerMain === void 0 ? void 0 : containerMain.appendChild(characterDetailsContainer);
-            const characterImage = document.createElement("img");
-            characterImage.setAttribute("src", characterData.image);
-            characterDetailsContainer.appendChild(characterImage);
-            const pName = document.createElement("p");
-            pName.textContent = `Name: ${characterData.name}`;
-            characterDetailsContainer.appendChild(pName);
-            const pStatus = document.createElement("p");
-            pStatus.textContent = `Status: ${characterData.status}`;
-            characterDetailsContainer.appendChild(pStatus);
-            const pSpecies = document.createElement("p");
-            pSpecies.textContent = `Species: ${characterData.species}`;
-            characterDetailsContainer.appendChild(pSpecies);
-            const pGender = document.createElement("p");
-            pGender.textContent = `Gender: ${characterData.gender}`;
-            characterDetailsContainer.appendChild(pGender);
-            const pOrigin = document.createElement("p");
-            pOrigin.textContent = `Origin: ${characterData.origin.name}`;
-            characterDetailsContainer.appendChild(pOrigin);
-            try {
-                const episodePromises = characterData.episode.map((urlEpisode) => fetch(urlEpisode).then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Failed to fetch episode data");
-                    }
-                    return response.json();
-                }));
-                const episodes = yield Promise.all(episodePromises);
-                const episodeList = document.createElement("ul");
-                episodes.forEach((episode) => {
-                    const episodeItem = document.createElement("li");
-                    episodeItem.textContent = `Episode${episode.name} | ${episode.episode}`;
-                    episodeList.appendChild(episodeItem);
-                });
-                characterDetailsContainer.appendChild(episodeList);
-                const characterContainer = document.getElementById("character-container");
-                characterContainer === null || characterContainer === void 0 ? void 0 : characterContainer.appendChild(characterDetailsContainer);
-            }
-            catch (error) {
-                console.error("Error fetching episode data:", error);
-            }
-        }
-        catch (error) {
-            console.error("Error fetching character data:", error);
-        }
-    });
-}
-function fetchCharacter(characterId) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const urlCharacter = `https://rickandmortyapi.com/api/character/${characterId}`;
-        const response = yield fetch(urlCharacter);
-        const data = yield response.json();
-        return data;
-    });
-}
 export const createEpisodesNavBarList = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const episodes = yield fetchEpisodes();
@@ -231,7 +166,7 @@ export const createEpisodesNavBarList = () => __awaiter(void 0, void 0, void 0, 
             episodeLi.setAttribute("class", "dropdown-item");
             episodeLi.setAttribute("data-elementnumber", episode.id.toString());
             ulListOfEpisodes.appendChild(episodeLi);
-            const episodeLink = document.createElement("a");
+            const episodeLink = document.createElement("button");
             episodeLink.setAttribute("class", "dropdown-item ");
             episodeLink.setAttribute("type", "button");
             episodeLink.setAttribute("data-elementnumber", episode.id.toString());
@@ -239,8 +174,7 @@ export const createEpisodesNavBarList = () => __awaiter(void 0, void 0, void 0, 
             episodeLi.appendChild(episodeLink);
             episodeLink.addEventListener("click", () => {
                 const containerMain = document.getElementById("containerMain");
-                console.log("funciona");
-                containerMain === null || containerMain === void 0 ? void 0 : containerMain.replaceChildren();
+                containerMain.replaceChildren();
                 const episodeDiv = document.createElement("div");
                 episodeDiv.setAttribute("class", "row mb-4 text center");
                 const titleDiv = document.createElement("div");
@@ -288,13 +222,12 @@ export const createEpisodesNavBarList = () => __awaiter(void 0, void 0, void 0, 
                         characterDiv.appendChild(pOrigin);
                         divContainerCharacters.appendChild(characterDiv);
                         characterDiv.addEventListener("click", () => showCharacter(characterData.id));
-                        console.log(characterData.id);
                     });
                 })
                     .catch((error) => {
                     console.error("Error fetching character data:", error);
                 });
-                containerMain === null || containerMain === void 0 ? void 0 : containerMain.appendChild(episodeDiv);
+                containerMain.appendChild(episodeDiv);
             });
         });
     }
