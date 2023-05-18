@@ -1,8 +1,6 @@
 import { urlEpisodes } from "../utils/urlApi.js";
-import { Episode, seasons, Season } from "../interfaces.js";
-import { Character } from "../interfaces.js";
-import { urlCharacters } from "../utils/urlApi.js";
-import { showCharacter, fetchCharacter } from "../characters/index.js";
+import { Episode, seasons } from "../interfaces.js";
+import { showCharacter } from "../characters/index.js";
 
 
 const ulListSeasons = document.getElementById("ulListSeason") as HTMLUListElement;

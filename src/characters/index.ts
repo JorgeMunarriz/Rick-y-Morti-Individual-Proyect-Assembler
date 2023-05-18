@@ -1,16 +1,14 @@
 import { urlCharacters } from "../utils/urlApi.js";
 import {
   ResultCharacter,
-  Character,
-  CharacterLocation,
-  Location,
+  Character
 } from "../interfaces.js";
 
 export const getCharacters = async () => {
   try {
     const characterBtn = document.getElementById(
       "charactersBtn"
-    ) as HTMLElement;
+    ) as HTMLButtonElement;
     const characters = await fetchCharacters();
     const totalPages = calculateTotalPages(characters.length);
 

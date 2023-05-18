@@ -3,16 +3,9 @@
     letter-spacing: 2px;
 }
 
-.header-bg-green{
-    background: rgb(151,206,76);
-}
-
 .side-bar-div{    
     width: 12rem;
     transition: 0.5s ease-in-out;
-}
-.no-show{
-    display: none;
 }
 
 .sign-in-display{
@@ -22,7 +15,7 @@
     flex-direction: column;
     justify-content: center;
 }
-.error-nput{
+.error-input{
     font-size: 20px;
     color: red;
     width: 30%;
