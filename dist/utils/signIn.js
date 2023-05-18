@@ -40,7 +40,7 @@ export function logIn() {
         localStorage.setItem("userName", userName);
         localStorage.setItem("email", email);
         localStorage.setItem("password", password);
-        const userButton = document.getElementById("user");
+        const userButton = document.getElementById("User");
         if (userButton) {
             userButton.textContent = userName;
         }

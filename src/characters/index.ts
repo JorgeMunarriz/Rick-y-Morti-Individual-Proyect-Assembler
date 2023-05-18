@@ -240,7 +240,7 @@ export async function showCharacter(characterId: number) {
       const episodeList = document.createElement("ul");
       episodes.forEach((episode: any) => {
         const episodeItem = document.createElement("li");
-        episodeItem.textContent = `Episode${episode.name} | ${episode.episode}`;
+        episodeItem.textContent = `Episode: ${episode.name} | ${episode.episode}`;
         episodeList.appendChild(episodeItem);
       });
       characterDetailsContainer.appendChild(episodeList);

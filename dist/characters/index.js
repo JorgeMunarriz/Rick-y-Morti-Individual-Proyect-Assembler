@@ -187,7 +187,7 @@ export function showCharacter(characterId) {
                 const episodeList = document.createElement("ul");
                 episodes.forEach((episode) => {
                     const episodeItem = document.createElement("li");
-                    episodeItem.textContent = `Episode${episode.name} | ${episode.episode}`;
+                    episodeItem.textContent = `Episode: ${episode.name} | ${episode.episode}`;
                     episodeList.appendChild(episodeItem);
                 });
                 characterDetailsContainer.appendChild(episodeList);

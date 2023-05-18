@@ -51,7 +51,7 @@ export function logIn(): void {
      localStorage.setItem("userName", userName)
      localStorage.setItem("email", email)
      localStorage.setItem("password", password)
-     const userButton = document.getElementById("user") as HTMLButtonElement
+     const userButton = document.getElementById("User") as HTMLElement
      if (userButton) {
        userButton.textContent = userName;
      }
