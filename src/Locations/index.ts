@@ -1,8 +1,8 @@
-import { urlLocations } from "../utils/urlApi.js"; 
+import { urlLocations } from "../utils/urlApi.js";
 import { Location, LocationResponse } from "../interfaces.js";
+import { showCharacter } from "../characters/index.js";
 
 let allLocations: Location[] = [];
-
 
 const fetchAllLocations = async (): Promise<Location[]> => {
   let nextPageUrl: string | null = urlLocations;
@@ -17,22 +17,22 @@ const fetchAllLocations = async (): Promise<Location[]> => {
   return allLocations;
 };
 
-// Show locations
+// Show list of all locations 
 export async function showLocations() {
   const locations = await fetchAllLocations();
 
-  const container = document.getElementById("containerMain");
-  container?.replaceChildren();
+  const container = document.getElementById("containerMain") as HTMLElement;
+  container.replaceChildren();
 
   const divContainer = document.createElement("div");
   divContainer.setAttribute("class", "container");
-  container?.appendChild(divContainer);
+  container.appendChild(divContainer);
 
   const titleLocation = document.createElement("h2");
   titleLocation.setAttribute("class", "text-align-left");
   divContainer.appendChild(titleLocation);
   titleLocation.textContent = "Locations";
-  
+
   const divUlLocations = document.createElement("div");
   divUlLocations.setAttribute("class", "overflow-auto");
   divUlLocations.style.maxHeight = "600px";
@@ -54,45 +54,48 @@ export async function showLocations() {
     ulListOfLocations.appendChild(listLocation);
   });
 }
-// Mostrar los detalles de un location específico
+// Show details of specifiec Location
 function showLocation(location: Location) {
-  const container = document.getElementById("containerMain");
-  container?.replaceChildren();
+  const container = document.getElementById("containerMain") as HTMLElement;
+  container.replaceChildren();
 
   const locationDiv = document.createElement("div");
-  locationDiv.setAttribute("class", "location-details");
-  container?.appendChild(locationDiv);
+  locationDiv.setAttribute("class", "location-details container");
+  container.appendChild(locationDiv);
 
   const titleLocation = document.createElement("h2");
   titleLocation.textContent = location.name;
   locationDiv.appendChild(titleLocation);
 
   const locationInfo = document.createElement("p");
-  locationInfo.textContent = `Location: ${location.type} | ${location.dimension}`;
+  locationInfo.textContent = `Type: ${location.type} | Dimension: ${location.dimension}`;
   locationDiv.appendChild(locationInfo);
 
   const residentsContainer = document.createElement("div");
   residentsContainer.setAttribute(
     "class",
-    "row row-cols-1 row-cols-sm-2 row-cols-md-3 g-5"
+    "row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-5 p-2"
   );
   locationDiv.appendChild(residentsContainer);
 
-  const characterPromises = location.residents.map((characterURL) => {
-    return fetch(characterURL)
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error("Error fetching character data:", error);
-      });
+  const characterPromises = location.residents.map(async (characterURL) => {
+    try {
+      const response = await fetch(characterURL);
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching character data:", error);
+    }
   });
 
   Promise.all(characterPromises)
     .then((characterDataArray) => {
       characterDataArray.forEach((characterData) => {
         const residentDiv = document.createElement("div");
-        residentDiv.setAttribute("class", "col");
+        residentDiv.setAttribute("class", "col card mx-1 p-0 text-center");
+        residentsContainer.appendChild(residentDiv);
 
         const characterImage = document.createElement("img");
+        characterImage.setAttribute("class", "w-100");
         characterImage.setAttribute("src", characterData.image);
         residentDiv.appendChild(characterImage);
 
@@ -107,8 +110,12 @@ function showLocation(location: Location) {
         const pSpecies = document.createElement("p");
         pSpecies.textContent = `Species: ${characterData.species}`;
         residentDiv.appendChild(pSpecies);
-
-        residentsContainer.appendChild(residentDiv);
+        const pOrigin = document.createElement("p");
+        pOrigin.textContent = `Origin: ${characterData.location.name}`;
+        residentDiv.appendChild(pOrigin);
+        residentDiv.addEventListener("click", () =>
+                  showCharacter(characterData.id)
+                );
       });
     })
     .catch((error) => {

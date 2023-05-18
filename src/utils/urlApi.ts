@@ -5,8 +5,8 @@ export const urlEpisodes = `${urlApi}/episode`;
 
 export const searchElements = async (searchTerm: string) => {
     console.log("eso ees")
-    const containerMain = document.getElementById("containerMain");
-    containerMain?.replaceChildren();
+    const containerMain = document.getElementById("containerMain") as HTMLElement;
+    containerMain.replaceChildren();
   
     try {
       const charactersResponse = await fetch(urlCharacters);
@@ -53,43 +53,41 @@ export const searchElements = async (searchTerm: string) => {
           const data = await response.json();
           const episodes = data.results;
       
-          allEpisodes.push(...episodes);
-          
+          allEpisodes.push(...episodes);         
         }
-      
        
-      
-      
-  
       const elementsToSearch = [...allCharacters, ...allLocations, ...allEpisodes];
       console.log(elementsToSearch)
       for (let i = 0; i < elementsToSearch.length; i++) {
         const element = elementsToSearch[i];
-        const text = element.name.toLowerCase();
+        const text = element.name.toLowerCase();     
         
-        
-        if (text.includes(searchTerm.toLowerCase())) {
-          
+        if (text.includes(searchTerm.toLowerCase())) {          
           if (element.status) {
             const elementCard = document.createElement("div");
-            containerMain?.appendChild(elementCard);
+            elementCard.setAttribute("class", "row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-5 p-2")
+            containerMain.appendChild(elementCard);
+            const characterCard  = document.createElement("div");
+            characterCard.setAttribute("class", "col card mx-1 p-0 text-center")
+            elementCard.appendChild(characterCard);
             const characterImage = document.createElement("img");
             characterImage.setAttribute("src", element.image);
-            elementCard.appendChild(characterImage);
+            characterCard.appendChild(characterImage);
   
             const pName = document.createElement("p");
             pName.textContent = `Name: ${element.name}`;
-            elementCard.appendChild(pName);
+            characterCard.appendChild(pName);
   
             const pStatus = document.createElement("p");
             pStatus.textContent = `Status: ${element.status}`;
-            elementCard.appendChild(pStatus);
+            characterCard.appendChild(pStatus);
   
             const pSpecies = document.createElement("p");
             pSpecies.textContent = `Species: ${element.species}`;
-            elementCard.appendChild(pSpecies);
+            characterCard.appendChild(pSpecies);
           } else if (element.episode) {
             const elementCard = document.createElement("div");
+            elementCard.setAttribute("class", "container mx-auto")
             containerMain?.appendChild(elementCard);
   
             const h2Episode = document.createElement("h2");
@@ -107,6 +105,7 @@ export const searchElements = async (searchTerm: string) => {
             // Agregar el resto de los detalles del episodio si es necesario
           } else if (element.dimension) {
             const elementCard = document.createElement("div");
+            elementCard.setAttribute("class", "container card mx-auto")
             containerMain?.appendChild(elementCard);
   
             const h2Location = document.createElement("h2");
@@ -119,9 +118,8 @@ export const searchElements = async (searchTerm: string) => {
   
             const pDimension = document.createElement("p");
             pDimension.textContent = `Dimension: ${element.dimension}`;
-            elementCard.appendChild(pDimension);
-  
-            // Agregar el resto de los detalles de la ubicación si es necesario
+            elementCard.appendChild(pDimension);  
+          
           }
         }
       }

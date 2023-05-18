@@ -1,4 +1,4 @@
-console.log("errorr");
+
 import { logIn } from "./utils/signIn.js";
 import { searchElements } from "./utils/urlApi.js";
 import { createSeasonsList, createEpisodesNavBarList,} from "./episodes/index.js";
@@ -6,7 +6,7 @@ import { changeThemesAdd } from "./changeThemes/index.js";
 import { showLocations } from "./Locations/index.js";
 import { getCharacters } from "./characters/index.js";
 
-console.log("errorr");
+
 window.onload = function () {
   changeThemesAdd();
   createSeasonsList();
@@ -24,7 +24,7 @@ window.onload = function () {
   });
 };
 
-// const fetchEpisodes = async (): Promise<Episode[]> => {
+
 //   let allEpisodes: Episode[] = [];
 //   let nextPageUrl = urlEpisodes;
 

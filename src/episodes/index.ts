@@ -2,9 +2,10 @@ import { urlEpisodes } from "../utils/urlApi.js";
 import { Episode, seasons, Season } from "../interfaces.js";
 import { Character } from "../interfaces.js";
 import { urlCharacters } from "../utils/urlApi.js";
+import { showCharacter, fetchCharacter } from "../characters/index.js";
 
 const listSeasons: string[] = [];
-const ulListSeasons = document.getElementById("ulListSeason");
+const ulListSeasons = document.getElementById("ulListSeason") as HTMLElement;
 export const createSeasonsList = async () => {
   try {
     const episodes = await fetchEpisodes();
@@ -32,10 +33,10 @@ export const createSeasonsList = async () => {
         episodeRange = episodes.slice(episodeCounter, episodeCounter + 10);
         episodeCounter += 10;
       }
-      const homeSeasons = document.getElementById("homeSeasons");
+      const homeSeasons = document.getElementById("homeSeasons") as HTMLElement;
       const seasonLi = document.createElement("li");
       seasonLi.setAttribute("class", "nav-item pe-auto");
-      ulListSeasons?.appendChild(seasonLi);
+      ulListSeasons.appendChild(seasonLi);
 
       const divDropdown = document.createElement("div");
       divDropdown.setAttribute("class", "dropdown");
@@ -61,14 +62,13 @@ export const createSeasonsList = async () => {
       ulListOfEpisodes.setAttribute("id", `episodesList-${season.id}`);
       divDropdown.appendChild(ulListOfEpisodes);
       linkSeason.onclick = function () {
-        homeSeasons?.classList.remove("active");
+        homeSeasons.classList.remove("active");
         linkSeason.classList.toggle("active");
         ulListOfEpisodes.onclick = function () {
           linkSeason.classList.remove("active");
         };
       };
-      episodeRange.forEach((episode) => {
-        // console.log(episodes)
+      episodeRange.forEach((episode) => {        
 
         const episodeLi = document.createElement("li");
         episodeLi.setAttribute("class", "dropdown-item");
@@ -82,9 +82,8 @@ export const createSeasonsList = async () => {
         episodeLi.appendChild(episodeLink);
 
         episodeLink.addEventListener("click", () => {
-          const containerMain = document.getElementById("containerMain");
-          console.log("funciona");
-          containerMain?.replaceChildren(); // Eliminar todos los hijos de containerMain
+          const containerMain = document.getElementById("containerMain") as HTMLElement;
+          containerMain.replaceChildren(); // Eliminate childrens
           const episodeDiv = document.createElement("div");
           episodeDiv.setAttribute("class", "row mb-4 text center");
           const titleDiv = document.createElement("div");
@@ -97,7 +96,7 @@ export const createSeasonsList = async () => {
           h2Title.textContent = ` ${episode.name}`;
           titleDiv.appendChild(h2Title);
           const h3Details = document.createElement("h3");
-          h3Details.textContent = `${episode.air_date} | Episode: ${episode.episode}`;
+          h3Details.textContent = `Air Date: ${episode.air_date} | Episode: ${episode.episode}`;
 
           titleDiv.appendChild(h3Details);
           const divContainerCharacters = document.createElement("div");
@@ -118,38 +117,38 @@ export const createSeasonsList = async () => {
 
           Promise.all(characterPromises)
             .then((characterDataArray) => {
-              characterDataArray.forEach((characterData) => {
+              characterDataArray.forEach((character) => {
                 const characterDiv = document.createElement("div");
                 characterDiv.setAttribute("class", "col card mx-1");
-                characterDiv.setAttribute("id", `character${characterData.id}`);
+                characterDiv.setAttribute("id", `character${character.id}`);
 
                 const characterImage = document.createElement("img");
-                characterImage.setAttribute("src", characterData.image);
+                characterImage.setAttribute("src", character.image);
                 characterDiv.appendChild(characterImage);
 
                 const pName = document.createElement("p");
-                pName.textContent = `Name: ${characterData.name}`;
+                pName.textContent = `Name: ${character.name}`;
                 characterDiv.appendChild(pName);
 
                 const pStatus = document.createElement("p");
-                pStatus.textContent = `Status: ${characterData.status}`;
+                pStatus.textContent = `Status: ${character.status}`;
                 characterDiv.appendChild(pStatus);
 
                 const pSpecies = document.createElement("p");
-                pSpecies.textContent = `Species: ${characterData.species}`;
+                pSpecies.textContent = `Species: ${character.species}`;
                 characterDiv.appendChild(pSpecies);
                 const pGender = document.createElement("p");
-                pGender.textContent = `Gender: ${characterData.gender}`;
+                pGender.textContent = `Gender: ${character.gender}`;
                 characterDiv.appendChild(pGender);
                 const pOrigin = document.createElement("p");
-                pOrigin.textContent = `Origin: ${characterData.origin.name}`;
+                pOrigin.textContent = `Origin: ${character.origin.name}`;
                 characterDiv.appendChild(pOrigin);
 
                 divContainerCharacters.appendChild(characterDiv);
                 characterDiv.addEventListener("click", () =>
-                  showCharacter(characterData.id)
+                  showCharacter(character.id)
                 );
-                console.log(characterData.id);
+                
               });
             })
             .catch((error) => {
@@ -187,88 +186,10 @@ const fetchEpisodes = async (): Promise<Episode[]> => {
   return allEpisodes;
 };
 
-async function showCharacter(characterId: number) {
-  try {
-    const containerMain = document.getElementById("containerMain");
-    containerMain?.replaceChildren();
-    const characterResponse = await fetchCharacter(characterId);
-    const characterData: Character = characterResponse;
-
-    // Crear un contenedor para mostrar los detalles del personaje
-    const characterDetailsContainer = document.createElement("div");
-    characterDetailsContainer.setAttribute("class", "character-details");
-    containerMain?.appendChild(characterDetailsContainer);
-
-    // Mostrar la imagen del personaje
-    const characterImage = document.createElement("img");
-    characterImage.setAttribute("src", characterData.image);
-    characterDetailsContainer.appendChild(characterImage);
-
-    // Mostrar el nombre del personaje
-    const pName = document.createElement("p");
-    pName.textContent = `Name: ${characterData.name}`;
-    characterDetailsContainer.appendChild(pName);
-
-    // Mostrar el estado del personaje
-    const pStatus = document.createElement("p");
-    pStatus.textContent = `Status: ${characterData.status}`;
-    characterDetailsContainer.appendChild(pStatus);
-
-    // Mostrar la especie del personaje
-    const pSpecies = document.createElement("p");
-    pSpecies.textContent = `Species: ${characterData.species}`;
-    characterDetailsContainer.appendChild(pSpecies);
-    const pGender = document.createElement("p");
-    pGender.textContent = `Gender: ${characterData.gender}`;
-    characterDetailsContainer.appendChild(pGender);
-    const pOrigin = document.createElement("p");
-    pOrigin.textContent = `Origin: ${characterData.origin.name}`;
-    characterDetailsContainer.appendChild(pOrigin);
-
-    // Obtener los episodios del personaje
-    try {
-      const episodePromises = characterData.episode.map((urlEpisode: string) =>
-        fetch(urlEpisode).then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to fetch episode data");
-          }
-          return response.json();
-        })
-      );
-
-      const episodes = await Promise.all(episodePromises);
-
-      // Mostrar los episodios en los que aparece el personaje
-      const episodeList = document.createElement("ul");
-      episodes.forEach((episode: any) => {
-        const episodeItem = document.createElement("li");
-        episodeItem.textContent = `Episode${episode.name} | ${episode.episode}`;
-        episodeList.appendChild(episodeItem);
-      });
-      characterDetailsContainer.appendChild(episodeList);
-
-      // Mostrar los detalles en el DOM
-      const characterContainer = document.getElementById("character-container");
-      characterContainer?.appendChild(characterDetailsContainer);
-    } catch (error) {
-      console.error("Error fetching episode data:", error);
-    }
-  } catch (error) {
-    console.error("Error fetching character data:", error);
-  }
-}
-
-async function fetchCharacter(characterId: number): Promise<Character> {
-  const urlCharacter = `https://rickandmortyapi.com/api/character/${characterId}`;
-  const response = await fetch(urlCharacter);
-  const data = await response.json();
-  return data;
-}
-
 export const createEpisodesNavBarList = async (): Promise<void> => {
   try {
     const episodes = await fetchEpisodes();
-    
+
     episodes.forEach((episode) => {
       // console.log(episodes)
       const ulListOfEpisodes = document.getElementById(
@@ -279,7 +200,7 @@ export const createEpisodesNavBarList = async (): Promise<void> => {
       episodeLi.setAttribute("class", "dropdown-item");
       episodeLi.setAttribute("data-elementnumber", episode.id.toString());
       ulListOfEpisodes.appendChild(episodeLi);
-      const episodeLink = document.createElement("a");
+      const episodeLink = document.createElement("button");
       episodeLink.setAttribute("class", "dropdown-item ");
       episodeLink.setAttribute("type", "button");
       episodeLink.setAttribute("data-elementnumber", episode.id.toString());

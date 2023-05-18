@@ -5,13 +5,14 @@ import {
   CharacterLocation, Location
 } from "../interfaces.js";
 
+
 export const getCharacters = async () => {
   try {
-    const characterBtn = document.getElementById("charactersBtn");
-    const characters = await fetchCharacter();
+    const characterBtn = document.getElementById("charactersBtn") as HTMLElement;
+    const characters = await fetchCharacters();
     const totalPages = calculateTotalPages(characters.length);
 
-    characterBtn?.addEventListener("click", () =>
+    characterBtn.addEventListener("click", () =>
       showCharacters(characters, totalPages, 1),
     );
   } catch (error) {
@@ -19,7 +20,7 @@ export const getCharacters = async () => {
   }
 };
 
-const fetchCharacter = async (): Promise<Character[]> => {
+const fetchCharacters = async (): Promise<Character[]> => {
   let allCharacters: ResultCharacter[] = [];
   let nextPageUrl = urlCharacters;
 
@@ -36,6 +37,7 @@ const fetchCharacter = async (): Promise<Character[]> => {
         species: characterData.species,
         image: characterData.image,
         location: characterData.name,
+        origin: characterData.name
   
       };
     });
@@ -45,13 +47,13 @@ const fetchCharacter = async (): Promise<Character[]> => {
   return allCharacters as Character[];
 };
 const createPagination = (totalPages: number, page: number, characters: Character[]) => {
-  const containerMain = document.getElementById("containerMain");
+  const containerMain = document.getElementById("containerMain") as HTMLElement;
   const paginationContainer = document.createElement("div");
   paginationContainer.setAttribute("id", "paginationContainer");
   if (!paginationContainer) return;
 
   paginationContainer.innerHTML = "";
-  containerMain?.appendChild(paginationContainer);
+  containerMain.appendChild(paginationContainer);
 
   const paginationList = document.createElement("ul");
   paginationList.classList.add("pagination");
@@ -123,8 +125,8 @@ const calculateTotalPages = (totalCharacters: number) => {
 };
 
 function showCharacters(characters: Character[], totalPages: number, page: number) {
-  const containerMain = document.getElementById("containerMain");
-  const currentPage = page;
+  const containerMain = document.getElementById("containerMain") as HTMLElement;
+  
   if (!containerMain) return;
 
   containerMain.innerHTML = "";
@@ -143,7 +145,7 @@ function showCharacters(characters: Character[], totalPages: number, page: numbe
 
   charactersToDisplay.forEach((character) => {
     const characterDiv = document.createElement("div");
-    characterDiv.setAttribute("class", "col card mx-1");
+    characterDiv.setAttribute("class", "col card mx-1 p-0 text-center card-hover");
     characterDiv.setAttribute("id", `character${character.id}`);
     divContainerCharacters.appendChild(characterDiv);
 
@@ -165,12 +167,98 @@ function showCharacters(characters: Character[], totalPages: number, page: numbe
     const pGender = document.createElement("p");
     pGender.textContent = `Gender: ${character.gender}`;
     characterDiv.appendChild(pGender);
-    const pOrigin = document.createElement("p");
-    pOrigin.textContent = `Origin: ${character.location.name}`;
-    characterDiv.appendChild(pOrigin);
     
+    const pOrigin = document.createElement("p");
+    pOrigin.textContent = `Origin: ${character.origin.name}`;
+    characterDiv.appendChild(pOrigin);
+    const pLocation = document.createElement("p");
+    pLocation.textContent = `Location: ${character.location.name}`;
+    characterDiv.appendChild(pLocation);
+    characterDiv.addEventListener("click", () =>
+                  showCharacter(character.id)
+                );
 
     
   });
   createPagination(totalPages, page, characters);
+}
+export async function showCharacter(characterId: number) {
+  try {
+    const containerMain = document.getElementById("containerMain") as HTMLElement;
+    containerMain.replaceChildren();
+    const characterResponse = await fetchCharacter(characterId);
+    const characterData: Character = characterResponse;
+
+    // Create Container of character details
+    const characterDetailsContainer = document.createElement("div");
+    characterDetailsContainer.setAttribute("class", "character-details ");
+    containerMain?.appendChild(characterDetailsContainer);
+
+    // Show character Image
+    const characterImage = document.createElement("img");
+    characterImage.setAttribute("src", characterData.image);
+    characterDetailsContainer.appendChild(characterImage);
+
+    // Mostrar el nombre del personaje
+    const pName = document.createElement("p");
+    pName.textContent = `Name: ${characterData.name}`;
+    characterDetailsContainer.appendChild(pName);
+
+    // Mostrar el estado del personaje
+    const pStatus = document.createElement("p");
+    pStatus.textContent = `Status: ${characterData.status}`;
+    characterDetailsContainer.appendChild(pStatus);
+
+    // Mostrar la especie del personaje
+    const pSpecies = document.createElement("p");
+    pSpecies.textContent = `Species: ${characterData.species}`;
+    characterDetailsContainer.appendChild(pSpecies);
+    const pGender = document.createElement("p");
+    pGender.textContent = `Gender: ${characterData.gender}`;
+    characterDetailsContainer.appendChild(pGender);
+    const pOrigin = document.createElement("p");
+    pOrigin.textContent = `Origin: ${characterData.origin.name}`;
+    characterDetailsContainer.appendChild(pOrigin);
+    const pLocation = document.createElement("p");
+    pLocation.textContent = `Location: ${characterData.location.name}`;
+    characterDetailsContainer.appendChild(pLocation);
+
+    // Obtener los episodios del personaje
+    try {
+      const episodePromises = characterData.episode.map((urlEpisode: string) =>
+        fetch(urlEpisode).then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch episode data");
+          }
+          return response.json();
+        })
+      );
+
+      const episodes = await Promise.all(episodePromises);
+
+      // Mostrar los episodios en los que aparece el personaje
+      const episodeList = document.createElement("ul");
+      episodes.forEach((episode: any) => {
+        const episodeItem = document.createElement("li");
+        episodeItem.textContent = `Episode${episode.name} | ${episode.episode}`;
+        episodeList.appendChild(episodeItem);
+      });
+      characterDetailsContainer.appendChild(episodeList);
+
+      // Mostrar los detalles en el DOM
+      const characterContainer = document.getElementById("character-container");
+      characterContainer?.appendChild(characterDetailsContainer);
+    } catch (error) {
+      console.error("Error fetching episode data:", error);
+    }
+  } catch (error) {
+    console.error("Error fetching character data:", error);
+  }
+}
+
+export async function fetchCharacter(characterId: number): Promise<Character> {
+  const urlCharacter = `https://rickandmortyapi.com/api/character/${characterId}`;
+  const response = await fetch(urlCharacter);
+  const data = await response.json();
+  return data;
 }

@@ -14,7 +14,7 @@ export const urlEpisodes = `${urlApi}/episode`;
 export const searchElements = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("eso ees");
     const containerMain = document.getElementById("containerMain");
-    containerMain === null || containerMain === void 0 ? void 0 : containerMain.replaceChildren();
+    containerMain.replaceChildren();
     try {
         const charactersResponse = yield fetch(urlCharacters);
         const charactersData = yield charactersResponse.json();
@@ -54,22 +54,27 @@ export const searchElements = (searchTerm) => __awaiter(void 0, void 0, void 0, 
             if (text.includes(searchTerm.toLowerCase())) {
                 if (element.status) {
                     const elementCard = document.createElement("div");
-                    containerMain === null || containerMain === void 0 ? void 0 : containerMain.appendChild(elementCard);
+                    elementCard.setAttribute("class", "row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-5 p-2");
+                    containerMain.appendChild(elementCard);
+                    const characterCard = document.createElement("div");
+                    characterCard.setAttribute("class", "col card mx-1 p-0 text-center");
+                    elementCard.appendChild(characterCard);
                     const characterImage = document.createElement("img");
                     characterImage.setAttribute("src", element.image);
-                    elementCard.appendChild(characterImage);
+                    characterCard.appendChild(characterImage);
                     const pName = document.createElement("p");
                     pName.textContent = `Name: ${element.name}`;
-                    elementCard.appendChild(pName);
+                    characterCard.appendChild(pName);
                     const pStatus = document.createElement("p");
                     pStatus.textContent = `Status: ${element.status}`;
-                    elementCard.appendChild(pStatus);
+                    characterCard.appendChild(pStatus);
                     const pSpecies = document.createElement("p");
                     pSpecies.textContent = `Species: ${element.species}`;
-                    elementCard.appendChild(pSpecies);
+                    characterCard.appendChild(pSpecies);
                 }
                 else if (element.episode) {
                     const elementCard = document.createElement("div");
+                    elementCard.setAttribute("class", "container mx-auto");
                     containerMain === null || containerMain === void 0 ? void 0 : containerMain.appendChild(elementCard);
                     const h2Episode = document.createElement("h2");
                     h2Episode.textContent = `Title: ${element.name}`;
@@ -83,6 +88,7 @@ export const searchElements = (searchTerm) => __awaiter(void 0, void 0, void 0, 
                 }
                 else if (element.dimension) {
                     const elementCard = document.createElement("div");
+                    elementCard.setAttribute("class", "container card mx-auto");
                     containerMain === null || containerMain === void 0 ? void 0 : containerMain.appendChild(elementCard);
                     const h2Location = document.createElement("h2");
                     h2Location.textContent = `Title: ${element.name}`;
