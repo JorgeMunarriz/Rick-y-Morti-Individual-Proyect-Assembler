@@ -30,7 +30,7 @@ export function getLocations() {
             const container = document.getElementById("containerMain");
             container.replaceChildren();
             const divContainer = document.createElement("div");
-            divContainer.setAttribute("class", "container");
+            divContainer.setAttribute("class", "container mt-3 text-center");
             container.appendChild(divContainer);
             const titleLocation = document.createElement("h2");
             titleLocation.setAttribute("class", "text-align-left");
@@ -61,12 +61,12 @@ function showLocation(location) {
     const container = document.getElementById("containerMain");
     container.replaceChildren();
     const locationDiv = document.createElement("div");
-    locationDiv.setAttribute("class", "location-details container");
+    locationDiv.setAttribute("class", "location-details container mt-3");
     container.appendChild(locationDiv);
     const titleLocation = document.createElement("h2");
     titleLocation.textContent = location.name;
     locationDiv.appendChild(titleLocation);
-    const locationInfo = document.createElement("p");
+    const locationInfo = document.createElement("h3");
     locationInfo.textContent = `Type: ${location.type} | Dimension: ${location.dimension}`;
     locationDiv.appendChild(locationInfo);
     const residentsContainer = document.createElement("div");
@@ -85,25 +85,29 @@ function showLocation(location) {
         .then((characterDataArray) => {
         characterDataArray.forEach((characterData) => {
             const residentDiv = document.createElement("div");
-            residentDiv.setAttribute("class", "col card mx-1 p-0 text-center");
+            residentDiv.setAttribute("class", "col card mx-1 p-0 shadow card-transform tex-center");
             residentsContainer.appendChild(residentDiv);
             const characterImage = document.createElement("img");
-            characterImage.setAttribute("class", "w-100");
+            characterImage.setAttribute("class", "w-100 p-0");
             characterImage.setAttribute("src", characterData.image);
             residentDiv.appendChild(characterImage);
+            const residentDetails = document.createElement("div");
+            residentDetails.setAttribute("class", "p-2 text-center");
+            residentDiv.appendChild(residentDetails);
+            ;
             const pName = document.createElement("p");
             pName.textContent = `Name: ${characterData.name}`;
-            residentDiv.appendChild(pName);
+            residentDetails.appendChild(pName);
             const pStatus = document.createElement("p");
             pStatus.textContent = `Status: ${characterData.status}`;
-            residentDiv.appendChild(pStatus);
+            residentDetails.appendChild(pStatus);
             const pSpecies = document.createElement("p");
             pSpecies.textContent = `Species: ${characterData.species}`;
-            residentDiv.appendChild(pSpecies);
+            residentDetails.appendChild(pSpecies);
             const pOrigin = document.createElement("p");
             pOrigin.textContent = `Origin: ${characterData.location.name}`;
-            residentDiv.appendChild(pOrigin);
-            residentDiv.addEventListener("click", () => showCharacter(characterData.id));
+            residentDetails.appendChild(pOrigin);
+            residentDetails.addEventListener("click", () => showCharacter(characterData.id));
         });
     })
         .catch((error) => {

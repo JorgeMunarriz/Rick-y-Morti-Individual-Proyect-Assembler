@@ -31,6 +31,7 @@ export const createSeasonsList = async () => {
         episodeRange = episodes.slice(episodeCounter, episodeCounter + 10);
         episodeCounter += 10;
       }
+      const body = document.getElementById("body")as HTMLDivElement;
       const homeSeasons = document.getElementById("homeSeasons") as HTMLElement;
       const seasonLi = document.createElement("li") as HTMLLIElement;
       seasonLi.setAttribute("class", "nav-item pe-auto");
@@ -45,6 +46,8 @@ export const createSeasonsList = async () => {
         "class",
         "nav-link pe-auto d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2"
       );
+      
+      linkSeason.setAttribute("id", `${season.id}`)
       linkSeason.setAttribute("data-bs-toggle", "dropdown");
       linkSeason.setAttribute("aria-expanded", "false");
 
@@ -59,13 +62,46 @@ export const createSeasonsList = async () => {
       );
       ulListOfEpisodes.setAttribute("id", `episodesList-${season.id}`);
       divDropdown.appendChild(ulListOfEpisodes);
-      linkSeason.onclick = function () {
-        homeSeasons.classList.remove("active");
-        linkSeason.classList.toggle("active");
-        ulListOfEpisodes.onclick = function () {
-          linkSeason.classList.remove("active");
-        };
+      
+
+      const linkSeasons = document.querySelectorAll(".nav-link") as NodeListOf<HTMLButtonElement>;
+const ulListOfEpis= document.querySelectorAll(".dropdown-menu") as NodeListOf<HTMLUListElement>;
+      function removeActiveClass() {
+        linkSeasons.forEach((link) => {
+          link.classList.remove("active");
+        });
+      }
+      
+      // Function to add the "active" class to the homeSeasons element
+      function setActiveHomeSeasons() {
+        homeSeasons.classList.add("active");
+      }
+      
+      // Click event on the body
+      body.onclick = function () {
+        removeActiveClass();
+        setActiveHomeSeasons();
       };
+      
+      // Click event on each linkSeason element
+      linkSeasons.forEach((link) => {
+        link.onclick = function (event) {
+          event.stopPropagation(); // Prevent the event from propagating to the body
+      
+          removeActiveClass();
+          link.classList.add("active");
+        };
+      });
+      
+      // Click event on each ulListOfEpisodes element
+      ulListOfEpis.forEach((ul) => {
+        ul.onclick = function (event) {
+          event.stopPropagation(); //  Prevent the event from propagating to the body
+      
+          removeActiveClass();
+        };
+      });
+      
       episodeRange.forEach((episode) => {        
 
         const episodeLi = document.createElement("li") as HTMLLIElement;
@@ -116,34 +152,35 @@ export const createSeasonsList = async () => {
           Promise.all(characterPromises)
             .then((characterDataArray) => {
               characterDataArray.forEach((character) => {
-                const characterDiv = document.createElement("div") as HTMLDivElement;
-                characterDiv.setAttribute("class", "col card mx-1");
-                characterDiv.setAttribute("id", `character${character.id}`);
+                const residentDiv = document.createElement("div") as HTMLDivElement;
+                residentDiv.setAttribute("class", "col card mx-1");
+                residentDiv.setAttribute("id", `character${character.id}`);
 
-                const characterImage = document.createElement("img") as HTMLImageElement;
-                characterImage.setAttribute("src", character.image);
-                characterDiv.appendChild(characterImage);
+                const residentImage = document.createElement("img") as HTMLImageElement;
+                residentImage.setAttribute("src", character.image);
+                residentImage.style.width="100%";
+                residentDiv.appendChild(residentImage);
 
                 const pName = document.createElement("p") as HTMLParagraphElement;
-                pName.textContent = `Name: ${character.name}`;
-                characterDiv.appendChild(pName);
+                pName.textContent = `Name: poll ${character.name}`;
+                residentDiv.appendChild(pName);
 
                 const pStatus = document.createElement("p") as HTMLParagraphElement;
                 pStatus.textContent = `Status: ${character.status}`;
-                characterDiv.appendChild(pStatus);
+                residentDiv.appendChild(pStatus);
 
                 const pSpecies = document.createElement("p") as HTMLParagraphElement;
                 pSpecies.textContent = `Species: ${character.species}`;
-                characterDiv.appendChild(pSpecies);
+                residentDiv.appendChild(pSpecies);
                 const pGender = document.createElement("p") as HTMLParagraphElement;
                 pGender.textContent = `Gender: ${character.gender}`;
-                characterDiv.appendChild(pGender);
+                residentDiv.appendChild(pGender);
                 const pOrigin = document.createElement("p") as HTMLParagraphElement
                 pOrigin.textContent = `Origin: ${character.origin.name}`;
-                characterDiv.appendChild(pOrigin);
+                residentDiv.appendChild(pOrigin);
 
-                divContainerCharacters.appendChild(characterDiv);
-                characterDiv.addEventListener("click", () =>
+                divContainerCharacters.appendChild(residentDiv);
+                residentDiv.addEventListener("click", () =>
                   showCharacter(character.id)
                 );
                 
@@ -210,11 +247,11 @@ export const createEpisodesNavBarList = async (): Promise<void> => {
         
         containerMain.replaceChildren(); // Eliminar todos los hijos de containerMain
         const episodeDiv = document.createElement("div") as HTMLDivElement;
-        episodeDiv.setAttribute("class", "row mb-4 text center");
+        episodeDiv.setAttribute("class", "row text-center my-4 mx-auto");
         const titleDiv = document.createElement("div") as HTMLDivElement;
         titleDiv.setAttribute(
           "class",
-          "col align-items-center justify-center text center"
+          "col align-items-center justify-center text-center"
         );
         episodeDiv.appendChild(titleDiv);
         const h2Title = document.createElement("h2") as HTMLHeadingElement;
@@ -228,7 +265,7 @@ export const createEpisodesNavBarList = async (): Promise<void> => {
         const divContainerCharacters = document.createElement("div") as HTMLDivElement;
         divContainerCharacters.setAttribute(
           "class",
-          "row row-cols-1 row-cols-sm-4 row-cols-md-5 mx-1 g-3"
+          "row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 justify-content-center g-3"
         );
         episodeDiv.appendChild(divContainerCharacters);
 
@@ -246,11 +283,13 @@ export const createEpisodesNavBarList = async (): Promise<void> => {
           .then((characterDataArray) => {
             characterDataArray.forEach((characterData) => {
               const characterDiv = document.createElement("div") as HTMLDivElement;
-              characterDiv.setAttribute("class", "col card mx-1");
+              characterDiv.setAttribute("class", "col card mx-1 p-0 shadow card-transform text-center");
               characterDiv.setAttribute("id", `character${characterData.id}`);
 
               const characterImage = document.createElement("img") as HTMLImageElement;
               characterImage.setAttribute("src", characterData.image);
+              characterImage.setAttribute("class", "rounded-top ");
+              characterImage.style.width="100%"
               characterDiv.appendChild(characterImage);
 
               const pName = document.createElement("p") as HTMLParagraphElement;

@@ -53,7 +53,7 @@ const createPagination = (
   const containerMain = document.getElementById("containerMain") as HTMLElement;
   const paginationContainer = document.createElement("div") as HTMLDivElement;
   paginationContainer.setAttribute("id", "paginationContainer")
-  paginationContainer.setAttribute("class", "");
+  paginationContainer.setAttribute("class", "d-flex justify-content-center");
   if (!paginationContainer) return;
 
   paginationContainer.innerHTML = "";
@@ -131,7 +131,7 @@ function showCharacters(
   page: number
 ) {
   const containerMain = document.getElementById("containerMain") as HTMLElement;
-
+  
   if (!containerMain) return;
 
   containerMain.innerHTML = "";
@@ -140,19 +140,27 @@ function showCharacters(
   const endIndex = startIndex + charactersPerPage;
 
   const charactersToDisplay = characters.slice(startIndex, endIndex);
+  const titleCharactersDiv = document.createElement("h2") as HTMLHeadingElement;
+  titleCharactersDiv.setAttribute(
+    "class",
+    "text-center my-3 p-0 "
+  );
+  titleCharactersDiv.textContent ="Characters";
+  containerMain.appendChild(titleCharactersDiv)
 
   const divContainerCharacters = document.createElement("div") as HTMLDivElement;
   divContainerCharacters.setAttribute(
     "class",
-    "row row-cols-1 row-cols-sm-4 row-cols-md-5 mx-1 g-3"
+    "row row-cols-1 row-cols-sm-4 row-cols-md-5 justify-content-center g-3 "
   );
   containerMain.appendChild(divContainerCharacters);
+  
 
   charactersToDisplay.forEach((character) => {
     const characterDiv = document.createElement("div") as HTMLDivElement;
     characterDiv.setAttribute(
       "class",
-      "col card mx-1 p-0 text-center card-hover"
+      "col card mx-1 p-0 text-center card-transform shadow"
     );
     characterDiv.setAttribute("id", `character${character.id}`);
     divContainerCharacters.appendChild(characterDiv);
@@ -197,43 +205,47 @@ export async function showCharacter(characterId: number) {
 
     // Create Container of character details
     const characterDetailsContainer = document.createElement("div") as HTMLDivElement;
-    characterDetailsContainer.setAttribute("class", "character-details ");
+    characterDetailsContainer.setAttribute("class", "character-details container flex-column ");
     containerMain.appendChild(characterDetailsContainer);
-
+    const characterDetailsDiv = document.createElement("div") as HTMLDivElement;
+    characterDetailsDiv.setAttribute("class", "container d-flex flex-column justify-content-center text-center ");
+    characterDetailsContainer.appendChild(characterDetailsDiv);
     // Show character Image
     const characterImage = document.createElement("img") as HTMLImageElement;
+    characterImage.style.width="70%";
+    characterImage.setAttribute("class", "mx-auto")
     characterImage.setAttribute("src", characterData.image);
-    characterDetailsContainer.appendChild(characterImage);
+    characterDetailsDiv.appendChild(characterImage);
 
     // Show character name
     const pName = document.createElement("p") as HTMLParagraphElement;
     pName.textContent = `Name: ${characterData.name}`;
-    characterDetailsContainer.appendChild(pName);
+    characterDetailsDiv.appendChild(pName);
 
     // Show character status
     const pStatus = document.createElement("p") as HTMLParagraphElement;
     pStatus.textContent = `Status: ${characterData.status}`;
-    characterDetailsContainer.appendChild(pStatus);
+    characterDetailsDiv.appendChild(pStatus);
 
     // Show character species
     const pSpecies = document.createElement("p") as HTMLParagraphElement;
     pSpecies.textContent = `Species: ${characterData.species}`;
-    characterDetailsContainer.appendChild(pSpecies);
+    characterDetailsDiv.appendChild(pSpecies);
 
     // Show character gender
     const pGender = document.createElement("p") as HTMLParagraphElement;
     pGender.textContent = `Gender: ${characterData.gender}`;
-    characterDetailsContainer.appendChild(pGender);
+    characterDetailsDiv.appendChild(pGender);
 
     // Show character gender
     const pOrigin = document.createElement("p") as HTMLParagraphElement;
     pOrigin.textContent = `Origin: ${characterData.origin.name}`;
-    characterDetailsContainer.appendChild(pOrigin);
+    characterDetailsDiv.appendChild(pOrigin);
 
     // Show character location
     const pLocation = document.createElement("p") as HTMLParagraphElement;
     pLocation.textContent = `Location: ${characterData.location.name}`;
-    characterDetailsContainer.appendChild(pLocation);
+    characterDetailsDiv.appendChild(pLocation);
 
     // Get character´s episode
     try {
@@ -248,18 +260,26 @@ export async function showCharacter(characterId: number) {
 
       const episodes = await Promise.all(episodePromises);
 
+      const episodesListDiv = document.createElement("div") as HTMLDivElement;
+        episodesListDiv.setAttribute("class", "container d-flex flex-wrap   ")
+        episodesListDiv.style.width = "98%"
+        characterDetailsContainer.appendChild(episodesListDiv);
+
+
       // Show the episodes in which the character appears
       const episodeList = document.createElement("ul") as HTMLUListElement;
+      episodeList.setAttribute("class", " d-flex flex-wrap row-cols-1 row-cols-sm-3 row-cols-md-5 g-3 ")
+      episodesListDiv.appendChild(episodeList);
+        let number: number = 1
       episodes.forEach((episode: any) => {
-        const episodeItem = document.createElement("li") as HTMLLIElement;
-        episodeItem.textContent = `Episode: ${episode.name} | ${episode.episode}`;
-        episodeList.appendChild(episodeItem);
+        number++;
+        const episodeItemLi = document.createElement("li") as HTMLLIElement;
+        episodeItemLi.setAttribute("class", `col card p-2 mx-4 my-4 shadow card-transform`)
+        episodeItemLi.textContent = `Episode: ${episode.name} | ${episode.episode}`;
+        episodeList.appendChild(episodeItemLi);
       });
-      characterDetailsContainer.appendChild(episodeList);
-
-      // Show details in the DOM
-      const characterContainer = document.getElementById("character-container");
-      characterContainer?.appendChild(characterDetailsContainer);
+      
+      
     } catch (error) {
       console.error("Error fetching episode data:", error);
     }

@@ -36,6 +36,7 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
                 episodeRange = episodes.slice(episodeCounter, episodeCounter + 10);
                 episodeCounter += 10;
             }
+            const body = document.getElementById("body");
             const homeSeasons = document.getElementById("homeSeasons");
             const seasonLi = document.createElement("li");
             seasonLi.setAttribute("class", "nav-item pe-auto");
@@ -45,6 +46,7 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
             seasonLi.appendChild(divDropdown);
             const linkSeason = document.createElement("button");
             linkSeason.setAttribute("class", "nav-link pe-auto d-flex align-items-center text-white text-decoration-none dropdown-toggle gap-2");
+            linkSeason.setAttribute("id", `${season.id}`);
             linkSeason.setAttribute("data-bs-toggle", "dropdown");
             linkSeason.setAttribute("aria-expanded", "false");
             divDropdown.appendChild(linkSeason);
@@ -55,13 +57,33 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
             ulListOfEpisodes.setAttribute("class", "dropdown-menu dropdown-menu-dark text-small shadow");
             ulListOfEpisodes.setAttribute("id", `episodesList-${season.id}`);
             divDropdown.appendChild(ulListOfEpisodes);
-            linkSeason.onclick = function () {
-                homeSeasons.classList.remove("active");
-                linkSeason.classList.toggle("active");
-                ulListOfEpisodes.onclick = function () {
-                    linkSeason.classList.remove("active");
-                };
+            const linkSeasons = document.querySelectorAll(".nav-link");
+            const ulListOfEpis = document.querySelectorAll(".dropdown-menu");
+            function removeActiveClass() {
+                linkSeasons.forEach((link) => {
+                    link.classList.remove("active");
+                });
+            }
+            function setActiveHomeSeasons() {
+                homeSeasons.classList.add("active");
+            }
+            body.onclick = function () {
+                removeActiveClass();
+                setActiveHomeSeasons();
             };
+            linkSeasons.forEach((link) => {
+                link.onclick = function (event) {
+                    event.stopPropagation();
+                    removeActiveClass();
+                    link.classList.add("active");
+                };
+            });
+            ulListOfEpis.forEach((ul) => {
+                ul.onclick = function (event) {
+                    event.stopPropagation();
+                    removeActiveClass();
+                };
+            });
             episodeRange.forEach((episode) => {
                 const episodeLi = document.createElement("li");
                 episodeLi.setAttribute("class", "dropdown-item");
@@ -100,29 +122,30 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
                     Promise.all(characterPromises)
                         .then((characterDataArray) => {
                         characterDataArray.forEach((character) => {
-                            const characterDiv = document.createElement("div");
-                            characterDiv.setAttribute("class", "col card mx-1");
-                            characterDiv.setAttribute("id", `character${character.id}`);
-                            const characterImage = document.createElement("img");
-                            characterImage.setAttribute("src", character.image);
-                            characterDiv.appendChild(characterImage);
+                            const residentDiv = document.createElement("div");
+                            residentDiv.setAttribute("class", "col card mx-1");
+                            residentDiv.setAttribute("id", `character${character.id}`);
+                            const residentImage = document.createElement("img");
+                            residentImage.setAttribute("src", character.image);
+                            residentImage.style.width = "100%";
+                            residentDiv.appendChild(residentImage);
                             const pName = document.createElement("p");
-                            pName.textContent = `Name: ${character.name}`;
-                            characterDiv.appendChild(pName);
+                            pName.textContent = `Name: poll ${character.name}`;
+                            residentDiv.appendChild(pName);
                             const pStatus = document.createElement("p");
                             pStatus.textContent = `Status: ${character.status}`;
-                            characterDiv.appendChild(pStatus);
+                            residentDiv.appendChild(pStatus);
                             const pSpecies = document.createElement("p");
                             pSpecies.textContent = `Species: ${character.species}`;
-                            characterDiv.appendChild(pSpecies);
+                            residentDiv.appendChild(pSpecies);
                             const pGender = document.createElement("p");
                             pGender.textContent = `Gender: ${character.gender}`;
-                            characterDiv.appendChild(pGender);
+                            residentDiv.appendChild(pGender);
                             const pOrigin = document.createElement("p");
                             pOrigin.textContent = `Origin: ${character.origin.name}`;
-                            characterDiv.appendChild(pOrigin);
-                            divContainerCharacters.appendChild(characterDiv);
-                            characterDiv.addEventListener("click", () => showCharacter(character.id));
+                            residentDiv.appendChild(pOrigin);
+                            divContainerCharacters.appendChild(residentDiv);
+                            residentDiv.addEventListener("click", () => showCharacter(character.id));
                         });
                     })
                         .catch((error) => {
@@ -176,9 +199,9 @@ export const createEpisodesNavBarList = () => __awaiter(void 0, void 0, void 0, 
                 const containerMain = document.getElementById("containerMain");
                 containerMain.replaceChildren();
                 const episodeDiv = document.createElement("div");
-                episodeDiv.setAttribute("class", "row mb-4 text center");
+                episodeDiv.setAttribute("class", "row text-center my-4 mx-auto");
                 const titleDiv = document.createElement("div");
-                titleDiv.setAttribute("class", "col align-items-center justify-center text center");
+                titleDiv.setAttribute("class", "col align-items-center justify-center text-center");
                 episodeDiv.appendChild(titleDiv);
                 const h2Title = document.createElement("h2");
                 h2Title.textContent = ` ${episode.name}`;
@@ -187,7 +210,7 @@ export const createEpisodesNavBarList = () => __awaiter(void 0, void 0, void 0, 
                 h3Details.textContent = `${episode.air_date} | Episode: ${episode.episode}`;
                 titleDiv.appendChild(h3Details);
                 const divContainerCharacters = document.createElement("div");
-                divContainerCharacters.setAttribute("class", "row row-cols-1 row-cols-sm-4 row-cols-md-5 mx-1 g-3");
+                divContainerCharacters.setAttribute("class", "row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 justify-content-center g-3");
                 episodeDiv.appendChild(divContainerCharacters);
                 const characterPromises = (episode.characters || []).map((characterURL) => {
                     return fetch(characterURL)
@@ -200,10 +223,12 @@ export const createEpisodesNavBarList = () => __awaiter(void 0, void 0, void 0, 
                     .then((characterDataArray) => {
                     characterDataArray.forEach((characterData) => {
                         const characterDiv = document.createElement("div");
-                        characterDiv.setAttribute("class", "col card mx-1");
+                        characterDiv.setAttribute("class", "col card mx-1 p-0 shadow card-transform text-center");
                         characterDiv.setAttribute("id", `character${characterData.id}`);
                         const characterImage = document.createElement("img");
                         characterImage.setAttribute("src", characterData.image);
+                        characterImage.setAttribute("class", "rounded-top ");
+                        characterImage.style.width = "100%";
                         characterDiv.appendChild(characterImage);
                         const pName = document.createElement("p");
                         pName.textContent = `Name: ${characterData.name}`;
