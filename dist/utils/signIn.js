@@ -64,7 +64,7 @@ export function logIn() {
     let boxItemPass1 = document.getElementById('confirmPass');
     const errorUser = document.createElement('div');
     errorUser.textContent = "This field should be complete";
-    errorUser.className = 'error';
+    errorUser.className = 'error-input';
     const userMsgError = errorUser;
     const errorEmail = document.createElement('div');
     errorEmail.textContent = "This field is not properly formatted";

@@ -86,7 +86,7 @@ export function logIn(): void {
   let boxItemPass1 = document.getElementById('confirmPass') as HTMLDivElement;
   const errorUser = document.createElement('div') as HTMLDivElement;
   errorUser.textContent = "This field should be complete"
-  errorUser.className = 'error';
+  errorUser.className = 'error-input';
   const userMsgError = errorUser;
 
   const errorEmail = document.createElement('div') as HTMLDivElement;
