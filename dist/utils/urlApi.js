@@ -20,6 +20,10 @@ export function webPageSearchEngine() {
     const searchElements = (searchTerm) => __awaiter(this, void 0, void 0, function* () {
         const containerMain = document.getElementById("containerMain");
         containerMain.replaceChildren();
+        const charactersTitle = document.createElement("h2");
+        charactersTitle.textContent = `Your Search includes this: `;
+        charactersTitle.setAttribute("class", "text-center ");
+        containerMain.appendChild(charactersTitle);
         const divContainerSearch = document.createElement("div");
         divContainerSearch.setAttribute("class", "row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 justify-content-center g-3");
         containerMain.appendChild(divContainerSearch);

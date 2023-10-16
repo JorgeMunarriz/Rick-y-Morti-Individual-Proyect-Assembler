@@ -12,6 +12,10 @@ export function webPageSearchEngine() {
   const searchElements = async (searchTerm: string) => {
     const containerMain = document.getElementById("containerMain") as HTMLElement;
     containerMain.replaceChildren();
+    const charactersTitle = document.createElement("h2") as HTMLDivElement;
+            charactersTitle.textContent = `Your Search includes this: `
+            charactersTitle.setAttribute("class", "text-center ");
+            containerMain.appendChild(charactersTitle);
     const divContainerSearch = document.createElement("div") as HTMLDivElement;
     divContainerSearch.setAttribute("class", "row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 justify-content-center g-3");
     containerMain.appendChild(divContainerSearch);
@@ -71,6 +75,8 @@ export function webPageSearchEngine() {
          
 
           if (element.status) {
+
+            
             const elementCard = document.createElement("div") as HTMLDivElement;
             elementCard.setAttribute("class", "col card mx-1 p-0 text-center card-transform shadow ");
             divContainerSearch.appendChild(elementCard);
@@ -93,6 +99,7 @@ export function webPageSearchEngine() {
             pSpecies.textContent = `Species: ${element.species}`;
             elementCard.appendChild(pSpecies);
           } else if (element.episode) {
+            
             const elementCard = document.createElement("div") as HTMLDivElement;
             elementCard.setAttribute("class", "col card mx-1 p-0 text-center card-transform shadow");
             divContainerSearch.appendChild(elementCard);
@@ -110,6 +117,7 @@ export function webPageSearchEngine() {
 
             // Agregar el resto de los detalles del episodio si es necesario
           } else if (element.dimension) {
+            
             const elementCard = document.createElement("div") as HTMLDivElement;
             elementCard.setAttribute("class", "col card mx-1 p-0 text-center card-transform shadow ");
             divContainerSearch.appendChild(elementCard);
