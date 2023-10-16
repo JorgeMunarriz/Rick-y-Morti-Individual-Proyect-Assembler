@@ -60,15 +60,22 @@ npm install
 Start the application:
 You can open live Server with https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer
 
-or 
-
+or you can install live-server in your pc :
 
 ```bash
-node script.js
+npm install -g live-server
 ```
 
-Open your web browser and access the application at http://localhost:3000.
+and run it:
 
+```bash
+live-server
+```
+
+Since the app is created using typescript to see the changes you are making in the code you must use the command:
+```bash	
+tsc --w
+```
 Usage
 Once the application is running, you can use it to explore the Rick and Morty API data. Here are the main functionalities:
 
