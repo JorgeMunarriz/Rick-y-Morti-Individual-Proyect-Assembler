@@ -98,7 +98,7 @@ function showLocation(location: Location) {
         residentsContainer.appendChild(residentDiv);
 
         const characterImage = document.createElement("img") as HTMLImageElement;
-        characterImage.setAttribute("class", "w-100 p-0");
+        characterImage.setAttribute("class", "w-100 p-0 rounded-top");
         characterImage.setAttribute("src", characterData.image);
         residentDiv.appendChild(characterImage)
         const residentDetails = document.createElement("div") as HTMLDivElement;

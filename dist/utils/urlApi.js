@@ -13,7 +13,7 @@ export const urlLocations = `${urlApi}/location`;
 export const urlEpisodes = `${urlApi}/episode`;
 export function webPageSearchEngine() {
     const buttonSearchNames = document.getElementById("searchBtn");
-    buttonSearchNames === null || buttonSearchNames === void 0 ? void 0 : buttonSearchNames.addEventListener("click", () => {
+    buttonSearchNames.addEventListener("click", () => {
         const searchTerm = document.getElementById("inputSearch").value;
         searchElements(searchTerm);
     });

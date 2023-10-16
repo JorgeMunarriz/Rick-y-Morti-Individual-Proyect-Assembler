@@ -123,10 +123,11 @@ export const createSeasonsList = () => __awaiter(void 0, void 0, void 0, functio
                         .then((characterDataArray) => {
                         characterDataArray.forEach((character) => {
                             const residentDiv = document.createElement("div");
-                            residentDiv.setAttribute("class", "col card mx-1");
+                            residentDiv.setAttribute("class", "col card mx-1 shadow card-transform text-center p-0");
                             residentDiv.setAttribute("id", `character${character.id}`);
                             const residentImage = document.createElement("img");
                             residentImage.setAttribute("src", character.image);
+                            residentImage.setAttribute("class", "rounded-top");
                             residentImage.style.width = "100%";
                             residentDiv.appendChild(residentImage);
                             const pName = document.createElement("p");

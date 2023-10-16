@@ -4,8 +4,8 @@ export const urlLocations = `${urlApi}/location`;
 export const urlEpisodes = `${urlApi}/episode`;
 
 export function webPageSearchEngine() {
-  const buttonSearchNames = document.getElementById("searchBtn");
-  buttonSearchNames?.addEventListener("click", () => {
+  const buttonSearchNames = document.getElementById("searchBtn") as HTMLButtonElement;
+  buttonSearchNames.addEventListener("click", () => {
     const searchTerm = (
       document.getElementById("inputSearch") as HTMLInputElement
     ).value;
@@ -19,8 +19,7 @@ export function webPageSearchEngine() {
 
     try {
       const charactersResponse = await fetch(urlCharacters);
-      const charactersData = await charactersResponse.json();
-      // const characters = charactersData.results;
+      const charactersData = await charactersResponse.json();      
 
       const locationsResponse = await fetch(urlLocations);
       const locationsData = await locationsResponse.json();

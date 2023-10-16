@@ -88,7 +88,7 @@ function showLocation(location) {
             residentDiv.setAttribute("class", "col card mx-1 p-0 shadow card-transform tex-center");
             residentsContainer.appendChild(residentDiv);
             const characterImage = document.createElement("img");
-            characterImage.setAttribute("class", "w-100 p-0");
+            characterImage.setAttribute("class", "w-100 p-0 rounded-top");
             characterImage.setAttribute("src", characterData.image);
             residentDiv.appendChild(characterImage);
             const residentDetails = document.createElement("div");
