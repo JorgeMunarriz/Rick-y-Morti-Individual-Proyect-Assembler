@@ -51,23 +51,20 @@ export function webPageSearchEngine() {
                 const episodes = data.results;
                 allEpisodes.push(...episodes);
             }
-            const elementsToSearch = [
-                ...allCharacters,
-                ...allLocations,
-                ...allEpisodes,
-            ];
+            const elementsToSearch = [...allCharacters, ...allLocations, ...allEpisodes];
             for (let i = 0; i < elementsToSearch.length; i++) {
                 const element = elementsToSearch[i];
                 const text = element.name.toLowerCase();
                 if (text.includes(searchTerm.toLowerCase())) {
-                    containerMain.setAttribute("class", "container d-flex row container-main-div");
+                    containerMain.setAttribute("class", "container d-flex row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 justify-content-center g-3");
                     containerMain.style.minWidth = "500px";
                     if (element.status) {
                         const elementCard = document.createElement("div");
-                        elementCard.setAttribute("class", "container d-flex row col card mx-1 p-0 text-center ");
+                        elementCard.setAttribute("class", "col card mx-1 p-0 text-center card-transform shadow ");
                         containerMain.appendChild(elementCard);
                         const characterImage = document.createElement("img");
                         characterImage.setAttribute("src", element.image);
+                        characterImage.setAttribute("class", "rounded-top");
                         characterImage.style.width = "100%";
                         elementCard.appendChild(characterImage);
                         const pName = document.createElement("p");
@@ -82,7 +79,7 @@ export function webPageSearchEngine() {
                     }
                     else if (element.episode) {
                         const elementCard = document.createElement("div");
-                        elementCard.setAttribute("class", "col card mx-1 p-0 text-center");
+                        elementCard.setAttribute("class", "col card mx-1 p-0 text-center card-transform shadow");
                         containerMain === null || containerMain === void 0 ? void 0 : containerMain.appendChild(elementCard);
                         const h2Episode = document.createElement("h2");
                         h2Episode.textContent = `Title: ${element.name}`;
@@ -96,7 +93,7 @@ export function webPageSearchEngine() {
                     }
                     else if (element.dimension) {
                         const elementCard = document.createElement("div");
-                        elementCard.setAttribute("class", "container d-flex row ");
+                        elementCard.setAttribute("class", "col card mx-1 p-0 text-center card-transform shadow ");
                         containerMain.appendChild(elementCard);
                         const h2Location = document.createElement("h2");
                         h2Location.textContent = `Title: ${element.name}`;
