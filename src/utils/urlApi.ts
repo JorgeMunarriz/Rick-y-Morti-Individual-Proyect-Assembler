@@ -12,6 +12,9 @@ export function webPageSearchEngine() {
   const searchElements = async (searchTerm: string) => {
     const containerMain = document.getElementById("containerMain") as HTMLElement;
     containerMain.replaceChildren();
+    const divContainerSearch = document.createElement("div") as HTMLDivElement;
+    divContainerSearch.setAttribute("class", "row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 justify-content-center g-3");
+    containerMain.appendChild(divContainerSearch);
 
     try {
       const charactersResponse = await fetch(urlCharacters);
@@ -63,13 +66,14 @@ export function webPageSearchEngine() {
         const text = element.name.toLowerCase();
 
         if (text.includes(searchTerm.toLowerCase())) {
-          containerMain.setAttribute("class", "container d-flex row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 justify-content-center g-3");
+          containerMain.setAttribute("class", "container container-main-div");
           containerMain.style.minWidth = "500px";
+         
 
           if (element.status) {
             const elementCard = document.createElement("div") as HTMLDivElement;
             elementCard.setAttribute("class", "col card mx-1 p-0 text-center card-transform shadow ");
-            containerMain.appendChild(elementCard);
+            divContainerSearch.appendChild(elementCard);
 
             const characterImage = document.createElement("img") as HTMLImageElement;
             characterImage.setAttribute("src", element.image);
@@ -91,7 +95,7 @@ export function webPageSearchEngine() {
           } else if (element.episode) {
             const elementCard = document.createElement("div") as HTMLDivElement;
             elementCard.setAttribute("class", "col card mx-1 p-0 text-center card-transform shadow");
-            containerMain?.appendChild(elementCard);
+            divContainerSearch.appendChild(elementCard);
             const h2Episode = document.createElement("h2") as HTMLHeadingElement;
             h2Episode.textContent = `Title: ${element.name}`;
             elementCard.appendChild(h2Episode);
@@ -108,7 +112,7 @@ export function webPageSearchEngine() {
           } else if (element.dimension) {
             const elementCard = document.createElement("div") as HTMLDivElement;
             elementCard.setAttribute("class", "col card mx-1 p-0 text-center card-transform shadow ");
-            containerMain.appendChild(elementCard);
+            divContainerSearch.appendChild(elementCard);
 
             const h2Location = document.createElement("h2") as HTMLHeadingElement;
             h2Location.textContent = `Title: ${element.name}`;

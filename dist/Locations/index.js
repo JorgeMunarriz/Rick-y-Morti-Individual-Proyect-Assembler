@@ -61,7 +61,8 @@ function showLocation(location) {
     const container = document.getElementById("containerMain");
     container.replaceChildren();
     const locationDiv = document.createElement("div");
-    locationDiv.setAttribute("class", "location-details container mt-3");
+    locationDiv.setAttribute("class", "container mt-3 text-center");
+    ;
     container.appendChild(locationDiv);
     const titleLocation = document.createElement("h2");
     titleLocation.textContent = location.name;
@@ -69,8 +70,11 @@ function showLocation(location) {
     const locationInfo = document.createElement("h3");
     locationInfo.textContent = `Type: ${location.type} | Dimension: ${location.dimension}`;
     locationDiv.appendChild(locationInfo);
+    const charactersInfo = document.createElement("h3");
+    charactersInfo.textContent = `Characters on ${location.dimension} :`;
+    locationDiv.appendChild(charactersInfo);
     const residentsContainer = document.createElement("div");
-    residentsContainer.setAttribute("class", "row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-5 p-2");
+    residentsContainer.setAttribute("class", "row row-cols-1 row-cols-sm-4 row-cols-md-5 justify-content-center g-3 ");
     locationDiv.appendChild(residentsContainer);
     const characterPromises = location.residents.map((characterURL) => __awaiter(this, void 0, void 0, function* () {
         try {

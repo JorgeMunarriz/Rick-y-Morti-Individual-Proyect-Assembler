@@ -63,7 +63,7 @@ function showLocation(location: Location) {
   container.replaceChildren();
 
   const locationDiv = document.createElement("div") as HTMLDivElement;
-  locationDiv.setAttribute("class", "location-details container mt-3") ;
+  locationDiv.setAttribute("class", "container mt-3 text-center"); ;
   container.appendChild(locationDiv);
 
   const titleLocation = document.createElement("h2") as HTMLHeadingElement;
@@ -73,11 +73,14 @@ function showLocation(location: Location) {
   const locationInfo = document.createElement("h3") as HTMLParagraphElement;
   locationInfo.textContent = `Type: ${location.type} | Dimension: ${location.dimension}`;
   locationDiv.appendChild(locationInfo);
+  const charactersInfo = document.createElement("h3") as HTMLParagraphElement;
+  charactersInfo.textContent = `Characters on ${location.dimension} :`;
+  locationDiv.appendChild(charactersInfo);
 
   const residentsContainer = document.createElement("div") as HTMLDivElement;
   residentsContainer.setAttribute(
     "class",
-    "row row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-5 p-2"
+    "row row-cols-1 row-cols-sm-4 row-cols-md-5 justify-content-center g-3 "
   );
   locationDiv.appendChild(residentsContainer);
 

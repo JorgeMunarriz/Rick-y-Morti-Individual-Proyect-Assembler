@@ -1,8 +1,16 @@
 *{
     font-family: 'Creepster', cursive;
     letter-spacing: 2px;
+    box-sizing: border-box;
+
 }
 
+html {
+    height: 100vh;
+}
+body{
+    height: 100vh;
+}
 .side-bar-div{    
     width: 12rem;
     transition: 0.5s ease-in-out;
